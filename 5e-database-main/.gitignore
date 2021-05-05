@@ -1,0 +1,6 @@
+upload-*
+named-*
+
+/node_modules/
+
+/.idea

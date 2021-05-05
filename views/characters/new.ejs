@@ -1,0 +1,107 @@
+<% layout('layouts/boilerplate') %>
+
+    <div class="container">
+
+        <div class="row">
+            <div class="col-6">
+                <form action="/new" method="POST" class="row g-3">
+                    <div class="col-md-6">
+                        <label for="name" class="form-label">Name</label>
+                        <input type="text" class="form-control" name="character[name]" id="name"
+                            placeholder="Character Name">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="race" class="form-label">Race</label>
+                        <select onchange="getRaceInfo('raceSelected')" id='race' class="form-select"
+                            aria-label="Default select example">
+                            <option selected>Open this select menu</option>
+                            <% for( let i=0; i < raceOptions.length; i++ ) { %>
+                                <option value="<%=raceOptions[i].name%>">
+                                    <%= raceOptions[i].name %>
+                                </option>
+                                <% } %>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="class" class="form-label">Class</label>
+                        <select id='class' class="form-select" aria-label="Default select example">
+                            <option selected>Open this select menu</option>
+                            <% for( let i=0; i < classOptions.length; i++ ) { %>
+                                <option value="<%= i %>">
+                                    <%= classOptions[i].name %>
+                                </option>
+                                <% } %>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="level" class="form-label">Level</label>
+                        <select id='class' class="form-select" aria-label="Default select example">
+                            <option selected>Open this select menu</option>
+                            <% for( let i=0; i <=20; i++ ) { %>
+                                <option value="i">
+                                    <%= i %>
+                                </option>
+                                <% } %>
+                        </select>
+                    </div>
+                    <div class="input-group flex-nowrap col-md-12">
+
+                        <% abilites.forEach(element=> { %>
+                            <div class="me-3">
+                                <label for="<%= element.name %> " class="form-label">
+                                    <%= element.name %>
+                                </label>
+                                <input value="10" class="form-control" type="number" id="<%= element.name %> "
+                                    aria-label="default input example">
+                            </div>
+                            <% }) %>
+
+                    </div>
+
+                    <div class="mb-3">
+                        <button class="btn btn-success">Add Character</button>
+                    </div>
+                </form>
+            </div>
+            <div class="col-6 text-center">
+                <h1 id='currentRaceName'></h1>
+                <p id='raceAge'></p>
+                <p id='launguages'></p>
+
+                <script>
+                    function getRaceInfo() {
+                        let raceSelected = document.getElementById('race').value;
+
+                        if (raceSelected != 'Open this select menu') {
+                            var xmlhttp = new XMLHttpRequest();
+                            xmlhttp.onreadystatechange = function () {
+                                if (this.readyState == 4 && this.status == 200) {
+                                    var myJson = JSON.parse(this.responseText);
+                                    // document.getElementById('currentRaceSelect').innerHTML = '';
+                                    // console.log(xmlhttp);
+                                    // console.log(myJson);
+
+
+                                    document.getElementById('currentRaceName').innerHTML = `Race: ${myJson[0].name}`;
+                                    document.getElementById('raceAge').innerHTML = `Age: ${myJson[0].age}`;
+                                    document.getElementById('launguages').innerHTML = `Known Laungauges: ${myJson[0].languages[0].name}, ${myJson[0].languages[1].name}`;
+
+                                    
+
+
+                                };
+                            };
+                                xmlhttp.open("GET", '/new/raceinfo', true);
+                                xmlhttp.setRequestHeader('raceSelected', raceSelected);
+                                xmlhttp.send();
+
+                            };
+                        };
+
+
+
+
+                </script>
+            </div>
+        </div>
+    </div>
