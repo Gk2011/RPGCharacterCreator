@@ -12,7 +12,7 @@ const viewChracterRoutes = require('./routes/viewCharacterRoutes');
 // Models
 const Character = require('./models/character');
 const { server_info } = require('./util/RedisClient');
-
+//comment
 const createApp = async () => {
     const app = express();
 
