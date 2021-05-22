@@ -6,6 +6,8 @@ const Race = require('../models/race');
 const AbilityScore = require('../models/ability-scores');
 const Character = require('../models/character');
 
+//const chracter =  
+
 const router = express.Router();
 
 router.get('/new/raceinfo', async (req, res) => {
