@@ -22,6 +22,7 @@ router.put('/edit/:id', async (req, res) => {
     const character = await Character.findByIdAndUpdate(id, { ...req.body.character});
     console.log(character)
     res.redirect(`/view/${ id }`);
+    
 })
 
 module.exports = router;
