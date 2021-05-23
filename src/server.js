@@ -25,6 +25,7 @@ const createApp = async () => {
     app.use(express.urlencoded({ extended: true }));
     app.use(methodOverride('_method'));
     app.use(newChracterRoutes, editChracterRoutes, viewChracterRoutes);
+    app.use(express.static(__dirname + '/public'));
 
 
     // Home Route

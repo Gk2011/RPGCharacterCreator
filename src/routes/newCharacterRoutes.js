@@ -10,11 +10,20 @@ const Character = require('../models/character');
 
 const router = express.Router();
 
-router.get('/new/raceinfo', async (req, res) => {
-    const raceSelected = req.header('raceSelected');
-    const raceInfo = await Race.find({name: raceSelected});
-    // console.log(raceInfo);
-    res.send(raceInfo);
+router.get('/new/ajax', async (req, res) => {
+    const requestTag = req.header('requestInfo');
+    const value = req.header('requestValue');
+    console.log(value);
+    if(requestTag == 'race'){
+        const raceInfo = await Race.find({name: value});
+        console.log(raceInfo);
+        res.send(raceInfo);
+    }
+    else if (requestTag == 'class') {
+        const classInfo = await Class.find({name: value})
+        res.send(classInfo)
+
+    };
 });
 
 router.get('/new', async (req, res) => {
