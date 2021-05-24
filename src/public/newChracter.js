@@ -6,14 +6,14 @@ function ajaxRequest(requestTag, value) {
         xmlhttp.onreadystatechange = function () {
             if (this.readyState == 4 && this.status == 200) {
                 let requestInfo = JSON.parse(this.responseText);
-                return requestInfo
-                //document.getElementById('currentRaceName').innerHTML = `Race: ${myJson[0].name}`;
-                //document.getElementById('raceAge').innerHTML = `Age: ${myJson[0].age}`;
-                //document.getElementById('launguages').innerHTML = `Known Laungauges: ${myJson[0].languages[0].name}, ${myJson[0].languages[1].name}`;
+                if (requestTag == 'race'){
+                    formatRace(requestInfo);
+                }else if (requestTag == 'class'){
+                    formatClass(requestInfo)
+                }
     };
 
 };
-
     xmlhttp.open("GET", '/new/ajax', true);
             xmlhttp.setRequestHeader('requestInfo', (requestTag));
             xmlhttp.setRequestHeader('requestValue', value);
@@ -21,14 +21,12 @@ function ajaxRequest(requestTag, value) {
     };
 };
 
-function getClass(value) {
-    let classInfo = (ajaxRequest('class', value));
-    console.log(classInfo);
+function formatClass(value) {
+    console.log(value);
 
 };
 
-function getRace(value) {
-    let raceInfo = ajaxRequest('race', value);
-    console.log(raceInfo);
+function formatRace(value) {
+    console.log(value);
 
 };
