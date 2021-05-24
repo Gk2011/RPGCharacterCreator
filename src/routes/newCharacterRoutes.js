@@ -13,15 +13,14 @@ const router = express.Router();
 router.get('/new/ajax', async (req, res) => {
     const requestTag = req.header('requestInfo');
     const value = req.header('requestValue');
-    console.log(value);
-    if(requestTag == 'race'){
+    //console.log(value);
+    if (requestTag == 'race'){
         const raceInfo = await Race.find({name: value});
         console.log(raceInfo);
         res.send(raceInfo);
-    }
-    else if (requestTag == 'class') {
-        const classInfo = await Class.find({name: value})
-        res.send(classInfo)
+    } else if (requestTag == 'class') {
+        const classInfo = await Class.find({name: value});
+        res.send(classInfo);
 
     };
 });

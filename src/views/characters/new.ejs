@@ -11,7 +11,7 @@
                     </div>
                     <div class="col-md-6">
                         <label for="race" class="form-label">Race</label>
-                        <select onchange="getRace(this.value)" id='race' class="form-select"
+                        <select onchange="ajaxRequest('race', this.value)" id='race' class="form-select"
                             aria-label="Default select example">
                             <option selected>Open this select menu</option>
                             <% for( let i=0; i < raceOptions.length; i++ ) { %>
@@ -23,10 +23,10 @@
                     </div>
                     <div class="col-md-6">
                         <label for="class" class="form-label">Class</label>
-                        <select onchange="getClass(this.value)" id='class' class="form-select" aria-label="Default select example">
+                        <select onchange="ajaxRequest('class', this.value)" id='class' class="form-select" aria-label="Default select example">
                             <option selected>Open this select menu</option>
                             <% for( let i=0; i < classOptions.length; i++ ) { %>
-                                <option value="<%= i %>">
+                                <option value="<%= classOptions[i].name %>">
                                     <%= classOptions[i].name %>
                                 </option>
                                 <% } %>
