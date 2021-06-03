@@ -40,7 +40,6 @@ function getName(value){
 };
 
 function getProficiencies(value){
-    let profElm = document.createElement('UL');
     let y = [];
     for(var x in value.proficiencies){
         y.push(value.proficiencies[x].name);
