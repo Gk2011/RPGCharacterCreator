@@ -1,8 +1,8 @@
 <% layout('layouts/boilerplate') %>
 
     <div class="container">
-        <div class="row">
-            <div class="col-6">
+        <div class="row align-items-center">
+            <div class="col-md-8">
                 <form action="/new" method="POST" class="row g-3">
                     <div class="col-md-6">
                         <label for="name" class="form-label">Name</label>
@@ -23,7 +23,8 @@
                     </div>
                     <div class="col-md-6">
                         <label for="class" class="form-label">Class</label>
-                        <select onchange="ajaxRequest('class', this.value)" id='class' class="form-select" aria-label="Default select example">
+                        <select onchange="ajaxRequest('class', this.value)" id='class' class="form-select"
+                            aria-label="Default select example">
                             <option selected>Open this select menu</option>
                             <% for( let i=0; i < classOptions.length; i++ ) { %>
                                 <option value="<%= classOptions[i].name %>">
@@ -43,33 +44,74 @@
                                 <% } %>
                         </select>
                     </div>
-                    <div class="input-group flex-nowrap col-md-12">
 
-                        <% abilites.forEach(element=> { %>
-                            <div class="me-3">
-                                <label for="<%= element.name %> " class="form-label">
-                                    <%= element.name %>
-                                </label>
-                                <input value="10" class="form-control" type="number" id="<%= element.name %> "
-                                    aria-label="default input example">
+                    <h2>Ability Calculations</h2>
+                    <div id='standardArrayDisplay' class='standardArrayDisplayClass'>
+
+                    <div class="row align-items-center">
+                        <%- include('./partials/inputScoreDisplay') %>
+                    </div>
+                    </div>
+            
+
+
+            <div class="container">
+            <div class="row">
+                <% abilites.forEach(element=> { %>
+                    <div class='col-md-6 mp-0 center'>
+                        <div class="card style=" width: 18rem;">
+                            <div class="card-header">
+                                <%=element.index%> Score
                             </div>
-                            <% }) %>
 
-                    </div>
+                            <table id="<%= element.index %>Table" class='table table-borderless'>
+                                <tr id='modifier'>
+                                    <td>Modifier</td>
+                                    <td>-</td>
+                                </tr>
+                                <tr id='baseScore'>
+                                    <td>Base Score</td>
+                                    <td>-</td>
+                                </tr>
+                                <tr id='RacialBonus'>
+                                    <td>Racial Bonus</td>
+                                    <td>-</td>
+                                </tr>
+                                <tr id='abilityImprovementBonus'>
+                                    <td>Ability Improvement</td>
+                                    <td>-</td>
+                                </tr>
+                                <tr id='miscBonus'>
+                                    <td>Misc Bonus</td>
+                                    <td>-</td>
+                                </tr>
 
-                    <div class="mb-3">
-                        <button class="btn btn-success">Add Character</button>
+                            </table>
+                        </div>
                     </div>
+                    <% });%>
+                </div>
+            </div>
+            <div class="mb-3">
+                <button class="btn btn-success">Add Character</button>
                 </form>
             </div>
-            <div class="col-6 text-center" id='selectedOverview'>
-                <h1 id='currentRaceName'>stuff</h1>
-                <p id='raceAge'>stuff</p>
-                <p id='launguages'>stuff</p>
-
+        </div>
+            <div class="col">
+                <div class="col-md-4 text-center" id='selectedOverview'>
+                    <h1 id='currentRaceName'>stuff</h1>
+                    <p id='raceAge'>stuff</p>
+                    <p id='launguages'>stuff</p>
+    
+                </div>
             </div>
         </div>
-        
-    </div>
-    <script src="newChracter.js"></script>
 
+
+    </div>
+
+
+
+
+
+    <script src="newChracter.js"></script>

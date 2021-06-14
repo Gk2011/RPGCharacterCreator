@@ -21,7 +21,6 @@ router.get('/new/ajax', async (req, res) => {
     } else if (requestTag == 'class') {
         const classInfo = await Class.find({name: value});
         res.send(classInfo);
-
     };
 });
 
