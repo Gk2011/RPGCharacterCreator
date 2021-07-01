@@ -1,3 +1,4 @@
+// Ajax request function to retreive data from express server for RACE and CLASS
 function ajaxRequest(requestTag, value) {
     if (value != 'Open this select menu') {
         var xmlhttp = new XMLHttpRequest();
@@ -10,35 +11,48 @@ function ajaxRequest(requestTag, value) {
                     formatClass(requestInfo[0])
                 }
             };
-
         };
         xmlhttp.open("GET", '/new/ajax', true);
         xmlhttp.setRequestHeader('requestInfo', (requestTag));
         xmlhttp.setRequestHeader('requestValue', value);
         xmlhttp.send();
+    } else {
+        if (requestTag == 'race') {
+            currentRaceSelected = null;
+        } else if (requestTag == 'class') {
+            currentClassSelected = null;
+        }
+
     };
 };
 
 
-
+// Format UI information for the user using the current Class selected 
 function formatClass(value) {
+    // set a global variable for currentClassSelected may need to remove later
+    currentClassSelected = value;
     //clear overview
+    //console.log(value);
     document.getElementById('selectedOverview').innerHTML = "";
     document.getElementById('selectedOverview').append(createElement("H1", getName(value)));
     document.getElementById('selectedOverview').append(createElement("P", getProficiencies(value)));
 };
 
+// Format UI information for the user using the current Race selected 
 function formatRace(value) {
+    // set a global variable for currentRaceSelected may need to remove later
+    currentRaceSelected = value;
+    //console.log(value);
     document.getElementById('selectedOverview').innerHTML = "";
     document.getElementById('selectedOverview').append(createElement("H1", getName(value)));
-    getAbilityBonuses(value);
-    calcAbilityModifier('str');
-};
+    //getAbilityBonuses(value);
+    updateDisplayRaceMod(getAbilityBonuses(value));
+ 
 
-function abilityCalculations(dictionaryValues) {
 
-};
+}
 
+// Getters for getting values of class/race json
 function getName(value) {
     let name = value.name;
     return name;
@@ -95,14 +109,19 @@ function createElement(elm, text) {
 }
 
 function getAbilityBonuses(value) {
-    const abilityScoreBonuses = {};
+    let abilityScoreBonuses = {};
     for (let x in value.ability_bonuses) {
         let abilityScore = value.ability_bonuses[x].ability_score.index;
         let abilitybonus = value.ability_bonuses[x].bonus;
 
         abilityScoreBonuses[abilityScore] = abilitybonus;
+        
     }
-    calcRace(abilityScoreBonuses);
+    //console.log(abilityScoreBonuses);
+    return abilityScoreBonuses;
+
+    //remove this code and move out of function
+    //updateDisplayRaceMod(abilityScoreBonuses);
 }
 
 
@@ -111,47 +130,88 @@ function calcClass(value) {
     return pass
 }
 
-function calcRace(abilityBonuses) {
+
+function updateDisplayRaceMod(abilityBonuses) {
     const abiltyScores = ['str', 'int', 'cha', 'con', 'dex', 'wis'];
     abiltyScores.forEach(clearRacialTableBonus);
     for (const [key, value] of Object.entries(abilityBonuses)) {
         if (abiltyScores.includes(key)) {
             modifyAbilityTable(key, 'RacialBonus', value)
-            calcAbilityModifier(key)
+            //calcAbilityModifier(key)
         }
     }
 };
 
+// Helper Function to reset RacialBonus value to null
 function clearRacialTableBonus(ability) {
     getAbilityTable(ability).rows.namedItem('RacialBonus').cells[1].innerHTML = '-';
 };
 
+// Helper function to modify a ability table with a value 
 function modifyAbilityTable(abilityTableName, rowName, value) {
     getAbilityTable(abilityTableName).rows.namedItem(rowName).cells[1].innerHTML = value;
 };
 
+// Helper Function to retreive a specific table
 function getAbilityTable(abilityTableName) {
     return document.getElementById(abilityTableName + 'Table');
 };
 
-function calcAbilityModifier(ability) {
-    var abilityTable = getAbilityTable(ability);
-    const domNames = ['baseScore', 'RacialBonus', 'abilityImprovementBonus', 'miscBonus'];
-    let skillScore = 0;
 
-    domNames.forEach(element => {
-        //console.log(abilityTable.rows.namedItem(element).cells[1].innerHTML);
-        if (!isNaN(abilityTable.rows.namedItem(element).cells[1].innerHTML)) {
-            //console.log(abilityTable.rows.namedItem(element).cells[1].innerHTML);
-            skillScore += parseInt(abilityTable.rows.namedItem(element).cells[1].innerHTML);
-        }
-    });
-    if (skillScore > 0) {
-        abilityTable.rows.namedItem('modifier').cells[1].innerHTML = Math.floor((skillScore - 10) / 2);
-    };
+// legacy code to calculate ability mod, need to update to only apply when Race, Class, and a ability method is selected with a value
+function calcAbilityModifier(abilityDOM) {
+
+    console.log("dom ability sent", abilityDOM.name,abilityDOM.value)
+    // get the race bonuses
+    let raceBonus = getAbilityBonuses(currentRaceSelected);
+    let abilityName = abilityDOM.name;
+    let abilityScore = abilityDOM.value;
+    console.log(abilityDOM.name);
+    
+    // calculate modifier
+    if (abilityDOM.name in raceBonus){
+        console.log('found a matching bonus');
+        
+    }
+
 
 };
 
+// function getAbilityScoresObj(){
+//     let abilities = ['str', 'int', 'con', 'wis', 'cha', 'dex']
+//     let abilityScoresObject = {};
+//     for (let i = 0; i < abilities.length; i++){
+//         console.log(document.getElementByName('str').value);
+//         let abilityScoreValue = document.getElementsByName(abilities[i]).value;
+        
+//         // if (abilityScoreValue == ''){
+//         //     abilityScore = null;
+//         // }
+//         abilityScoresObject[abilities[i]] = abilityScoreValue;
+    
+//         }
+//         return abilityScoresObject;
+//     };
+
+//     var abilityTable = getAbilityTable(ability);
+//     const domNames = ['baseScore', 'RacialBonus', 'abilityImprovementBonus', 'miscBonus'];
+//     let skillScore = 0;
+
+//     domNames.forEach(element => {
+//         //console.log(abilityTable.rows.namedItem(element).cells[1].innerHTML);
+//         if (!isNaN(abilityTable.rows.namedItem(element).cells[1].innerHTML)) {
+//             //console.log(abilityTable.rows.namedItem(element).cells[1].innerHTML);
+//             skillScore += parseInt(abilityTable.rows.namedItem(element).cells[1].innerHTML);
+//         }
+//     });
+//     if (skillScore > 0) {
+//         abilityTable.rows.namedItem('modifier').cells[1].innerHTML = Math.floor((skillScore - 10) / 2);
+//     };
+
+// };
+
+//// Function for updating display score values
+// Change UI to reflect if the user has selected Standard or Pointbuy 
 function setAbilityScoreType(value) {
     if (value == 'standard') {
         var x = document.getElementById("inputAbilityScoreDisplayPointBuy");
@@ -166,6 +226,7 @@ function setAbilityScoreType(value) {
     }
 };
 
+// Update points values on change 
 function updatePoints(domAbilityChanged) {
     // Get old,new,and point change values
     let oldValue = domAbilityChanged.oldValue;
@@ -205,130 +266,68 @@ function updatePoints(domAbilityChanged) {
 };
 
 
-
-// Update list of availible choices, Keep old value selected
+// Update dropdown list on onfocus to show current availible choices, 
+// if a value is currently selected readd to the list of availible in dropdown and autoselect null
 function updateStandardList(domAbilityChanged) {
     var length = domAbilityChanged.options.length;
     var currentValue = domAbilityChanged.value;
-    console.log("The value on focus is, ", currentValue)
     // Readd selected valid value to availible list to be re-displayed
     if (standardNotAvailible.includes(parseInt(currentValue))) {
-        console.log("This value should be readded to the availible list: ", currentValue);
         let index = standardNotAvailible.indexOf(parseInt(currentValue));
-        console.log("The index of the value that needs to be readded is: ", index);
         let reAddValue = standardNotAvailible.splice(index, 1)[0];
-        console.log("Value detected from nonavailible list: ", reAddValue);
         standardAvailible.push(reAddValue);
-        console.log("the new list that will be made availible to the user: ", standardAvailible);
-        standardAvailible.sort;
     };
     // Remove all from list
     for (i = length; i >= 0; i--) {
         domAbilityChanged.options[i] = null;
     };
+    sortSelectionBoxArray(standardAvailible);
     standardAvailible.forEach(element => {
         let option = document.createElement('option');
         option.text = element;
         domAbilityChanged.options.add(option);
     });
-    console.log(standardAvailible);
-    console.log(standardNotAvailible);
+    
+};
+
+// Remove previous availiable value from standard Array
+function removeStandardavailible(domAbilityChanged) {
+    let currentValue = domAbilityChanged.value;
+    if ((Number.isInteger(currentValue))) {
+    } else {
+        let removeOptionIndex = standardAvailible.indexOf(parseInt(currentValue));
+        let removeOption = standardAvailible.splice(removeOptionIndex, 1)[0];
+        standardNotAvailible.push(removeOption);
+        domAbilityChanged.blur();
+        if (currentRaceSelected) {
+            //console.log(domAbilityChanged.name);
+            
+        }
+        calcAbilityModifier(domAbilityChanged);
+        
+    }
+}
+// Helper sort function to resort standard ability dropdown values
+function sortSelectionBoxArray(array) {
+    let firstString = array.shift();
+    array.sort(function (a, b) {
+        return a - b;
+    })
+    array.unshift(firstString);
 };
 
 
 
-
-//on focus get update list, keep current selected value, remove already used numbers
-//on change remove value from standard value list, readd old value if needed
-//
-function removeStandardavailible(domAbilityChanged){
-    // let currentValue = parseInt(domAbilityChanged.value);
-    // console.log(currentValue);
-    // if ((Number.isInteger(currentValue))) {
-    //     console.log(Number.isInteger(currentValue));
-    //     let index = standardAvailible.indexOf(currentValue);
-    //     standardNotAvailible.push(standardAvailible.splice(index, 1)[0]);
-    // }
-    // console.log(standardAvailible);
-    // console.log(standardNotAvailible);
-
-    let currentValue = domAbilityChanged.value;
-    console.log(currentValue);
-    if ((Number.isInteger(currentValue))){
-
-    }else{
-        let removeOptionIndex = standardAvailible.indexOf(parseInt(currentValue));
-        console.log('index ', currentValue, removeOptionIndex)
-        let removeOption = standardAvailible.splice(removeOptionIndex, 1)[0];
-        console.log("This item was removed from the availible options and will be made reavailible when de-selected,", removeOption);
-        standardNotAvailible.push(removeOption);
-        console.log(standardAvailible);
-        console.log(standardNotAvailible);
-    }
-}
-
-
-
-// event liseners
-
+// Set UI Display for standard and pointbuy to none by default, need to add css to remove this code in the future to clean-up
 document.getElementById("inputAbilityScoreDisplayPointBuy").style.display = "none";
 document.getElementById("inputAbilityScoreDisplayStandard").style.display = "none";
 
+// global to track points, may add feature to decrease or increase in the future
 let pointsAvailible = 27;
+// globals to set availible and not availible values for standard
 let standardAvailible = ["", 8, 10, 12, 13, 14, 15];
 let standardNotAvailible = [];
 
 
-
-
-// // old standard update code
-
-// // Update list of availible choices, Keep old value selected
-// function updateStandardList(domAbilityChanged) {
-//     let currentValue = domAbilityChanged.value;
-//     var length = domAbilityChanged.options.length;
-
-
-//     // Remove all from list
-//     for (i = length; i >= 0; i--) {
-//         domAbilityChanged.options[i] = null;
-//     };
-//     // Add all avalible options back in
-//     standardAvailible.forEach(element => {
-//         let option = document.createElement('option');
-//         option.text = element;
-//         domAbilityChanged.options.add(option);
-
-//     });
-//     // Set old selected value as already selected option
-//     let option = document.createElement('option');
-//     if (!(currentValue == '')){
-//         option.text = currentValue;
-//         domAbilityChanged.options.add(option);
-//         domAbilityChanged.value = option;
-//     }else{
-//         domAbilityChanged.value = domAbilityChanged.options[0];
-//     };
-// }
-
-
-
-
-// //on focus get update list, keep current selected value, remove already used numbers
-// //on change remove value from standard value list, readd old value if needed
-// //
-
-// function removeStandardavailible(domAbilityChanged){
-//     let currentValue = domAbilityChanged.value;
-//     if (currentValue == ''){
-
-//     }else{
-//         let index = standardAvailible.indexOf(currentValue);
-//         let optionRemoved = standardAvailible.splice(index, 1);
-//         console.log("Removed option: ", optionRemoved)
-//     }
-
-
-// }
-
-
+currentClassSelected = null;
+currentRaceSelected = null;
