@@ -46,10 +46,7 @@ function formatRace(value) {
     document.getElementById('selectedOverview').innerHTML = "";
     document.getElementById('selectedOverview').append(createElement("H1", getName(value)));
     //getAbilityBonuses(value);
-    updateDisplayRaceMod(getAbilityBonuses(value));
- 
-
-
+    updateDisplayRaceMod();
 }
 
 // Getters for getting values of class/race json
@@ -115,100 +112,87 @@ function getAbilityBonuses(value) {
         let abilitybonus = value.ability_bonuses[x].bonus;
 
         abilityScoreBonuses[abilityScore] = abilitybonus;
-        
     }
-    //console.log(abilityScoreBonuses);
     return abilityScoreBonuses;
-
-    //remove this code and move out of function
-    //updateDisplayRaceMod(abilityScoreBonuses);
 }
-
-
 
 function calcClass(value) {
     return pass
 }
 
-
-function updateDisplayRaceMod(abilityBonuses) {
+function updateDisplayRaceMod() {
     const abiltyScores = ['str', 'int', 'cha', 'con', 'dex', 'wis'];
-    abiltyScores.forEach(clearRacialTableBonus);
-    for (const [key, value] of Object.entries(abilityBonuses)) {
+    let rowName = "RacialBonus";
+
+    for (let ability of abiltyScores) {
+        clearTableBonus(ability, rowName)
+    }
+    if (currentRaceSelected){
+    for (const [key, value] of Object.entries(getAbilityBonuses(currentRaceSelected))) {
         if (abiltyScores.includes(key)) {
-            modifyAbilityTable(key, 'RacialBonus', value)
-            //calcAbilityModifier(key)
+            modifyAbilityTable(key, rowName, value)
         }
     }
-};
+    }
+    for (let ability in abiltyScores) {
+        let abilityDomObject = null;
+        if (document.getElementById("inputAbilityScoreDisplayStandard").style.display == "") {
+            //console.log("display set to standard")
+            abilityDomObject = document.getElementById("standard" + abiltyScores[ability]);
+        }
+        if (document.getElementById("inputAbilityScoreDisplayPointBuy").style.display == "") {
+            //console.log("display set to point")
+            abilityDomObject = document.getElementById("point" + abiltyScores[ability]);
+        }
+        try {
+            if (!isNaN(parseInt(abilityDomObject.value)) || (abilityDomObject.value == null)) {
+                //console.log("is number")
+                //console.log(parseInt(abilityDomObject.value));
+                if (currentRaceSelected){
+                modifyAbilityTable(abilityDomObject.name, "modifier", calcAbilityModifier(abilityDomObject));
+                }
+                modifyAbilityTable(abilityDomObject.name, "baseScore", abilityDomObject.value);
+            } else {
+                modifyAbilityTable(abilityDomObject.name, "modifier", "-");
+                modifyAbilityTable(abilityDomObject.name, "baseScore", "-");
+            }
 
-// Helper Function to reset RacialBonus value to null
-function clearRacialTableBonus(ability) {
-    getAbilityTable(ability).rows.namedItem('RacialBonus').cells[1].innerHTML = '-';
+        } catch (error) {
+            console.log(error);
+        }
+    }
+}
+// Helper Function to clear row value to null
+function clearTableBonus(ability, rowName) {
+    getAbilityTable(ability).rows.namedItem(rowName).cells[1].innerHTML = '-';
 };
-
 // Helper function to modify a ability table with a value 
 function modifyAbilityTable(abilityTableName, rowName, value) {
     getAbilityTable(abilityTableName).rows.namedItem(rowName).cells[1].innerHTML = value;
 };
-
 // Helper Function to retreive a specific table
 function getAbilityTable(abilityTableName) {
     return document.getElementById(abilityTableName + 'Table');
 };
-
-
-// legacy code to calculate ability mod, need to update to only apply when Race, Class, and a ability method is selected with a value
+// calculate ability modifier
 function calcAbilityModifier(abilityDOM) {
-
-    console.log("dom ability sent", abilityDOM.name,abilityDOM.value)
     // get the race bonuses
     let raceBonus = getAbilityBonuses(currentRaceSelected);
     let abilityName = abilityDOM.name;
-    let abilityScore = abilityDOM.value;
-    console.log(abilityDOM.name);
-    
-    // calculate modifier
-    if (abilityDOM.name in raceBonus){
-        console.log('found a matching bonus');
-        
+    let abilityScore = parseInt(abilityDOM.value);
+    let raceAbilityBonus = 0;
+    //console.log(abilityDOM.name);
+
+    // check if race bonus is applicable for the calculation
+    if (abilityDOM.name in raceBonus) {
+        raceAbilityBonus = raceBonus[abilityName];
     }
+    let modValue = Math.floor(((abilityScore + raceAbilityBonus) - 10) / 2);
+    //console.log(modValue);
+    return modValue;
 
-
+    //modifyAbilityTable(abilityName, "modifier", modValue);
 };
-
-// function getAbilityScoresObj(){
-//     let abilities = ['str', 'int', 'con', 'wis', 'cha', 'dex']
-//     let abilityScoresObject = {};
-//     for (let i = 0; i < abilities.length; i++){
-//         console.log(document.getElementByName('str').value);
-//         let abilityScoreValue = document.getElementsByName(abilities[i]).value;
-        
-//         // if (abilityScoreValue == ''){
-//         //     abilityScore = null;
-//         // }
-//         abilityScoresObject[abilities[i]] = abilityScoreValue;
-    
-//         }
-//         return abilityScoresObject;
-//     };
-
-//     var abilityTable = getAbilityTable(ability);
-//     const domNames = ['baseScore', 'RacialBonus', 'abilityImprovementBonus', 'miscBonus'];
-//     let skillScore = 0;
-
-//     domNames.forEach(element => {
-//         //console.log(abilityTable.rows.namedItem(element).cells[1].innerHTML);
-//         if (!isNaN(abilityTable.rows.namedItem(element).cells[1].innerHTML)) {
-//             //console.log(abilityTable.rows.namedItem(element).cells[1].innerHTML);
-//             skillScore += parseInt(abilityTable.rows.namedItem(element).cells[1].innerHTML);
-//         }
-//     });
-//     if (skillScore > 0) {
-//         abilityTable.rows.namedItem('modifier').cells[1].innerHTML = Math.floor((skillScore - 10) / 2);
-//     };
-
-// };
 
 //// Function for updating display score values
 // Change UI to reflect if the user has selected Standard or Pointbuy 
@@ -224,10 +208,14 @@ function setAbilityScoreType(value) {
         x.style.display = "";
         y.style.display = "none";
     }
+    
+    updateDisplayRaceMod();
+    
 };
 
 // Update points values on change 
 function updatePoints(domAbilityChanged) {
+    //console.log("run once")
     // Get old,new,and point change values
     let oldValue = domAbilityChanged.oldValue;
     let newValue = domAbilityChanged.value;
@@ -260,17 +248,20 @@ function updatePoints(domAbilityChanged) {
         domAbilityChanged.value = newValue;
         // Update UI Score to reflect points used vs overall 27 total
         document.getElementById('pointBuyScore').innerHTML = pointsAvailible.toString() + "/27";
-
+        modifyAbilityTable(domAbilityChanged.name, "baseScore", newValue);
+        if (currentRaceSelected) {
+            modifyAbilityTable(domAbilityChanged.name, "modifier", calcAbilityModifier(domAbilityChanged));
+        }
     }
-
 };
-
 
 // Update dropdown list on onfocus to show current availible choices, 
 // if a value is currently selected readd to the list of availible in dropdown and autoselect null
 function updateStandardList(domAbilityChanged) {
     var length = domAbilityChanged.options.length;
     var currentValue = domAbilityChanged.value;
+    modifyAbilityTable(domAbilityChanged.name, "baseScore", "-");
+    modifyAbilityTable(domAbilityChanged.name, "modifier", "-");
     // Readd selected valid value to availible list to be re-displayed
     if (standardNotAvailible.includes(parseInt(currentValue))) {
         let index = standardNotAvailible.indexOf(parseInt(currentValue));
@@ -287,7 +278,6 @@ function updateStandardList(domAbilityChanged) {
         option.text = element;
         domAbilityChanged.options.add(option);
     });
-    
 };
 
 // Remove previous availiable value from standard Array
@@ -301,10 +291,11 @@ function removeStandardavailible(domAbilityChanged) {
         domAbilityChanged.blur();
         if (currentRaceSelected) {
             //console.log(domAbilityChanged.name);
-            
         }
-        calcAbilityModifier(domAbilityChanged);
-        
+        modifyAbilityTable(domAbilityChanged.name, "baseScore", currentValue);
+        if (currentRaceSelected){
+        modifyAbilityTable(domAbilityChanged.name, "modifier", calcAbilityModifier(domAbilityChanged));
+        }
     }
 }
 // Helper sort function to resort standard ability dropdown values
@@ -315,8 +306,6 @@ function sortSelectionBoxArray(array) {
     })
     array.unshift(firstString);
 };
-
-
 
 // Set UI Display for standard and pointbuy to none by default, need to add css to remove this code in the future to clean-up
 document.getElementById("inputAbilityScoreDisplayPointBuy").style.display = "none";

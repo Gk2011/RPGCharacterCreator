@@ -22,8 +22,8 @@
 <div id="inputAbilityScoreDisplayStandard" class="container">
     <div class="row">
         <div class="col-md-4">
-            <label class='text-center' for="floatingSelectStr">Strength</label>
-            <select name="str" onchange="removeStandardavailible(this)" onfocus="updateStandardList(this)" id='floatingSelectStr' class="form-select" aria-label="Default select example">
+            <label class='text-center' for="standardstr">Strength</label>
+            <select name="str" onchange="removeStandardavailible(this)" onfocus="updateStandardList(this)" id='standardstr' class="form-select" aria-label="Default select example">
                 <option selected></option>
                 <option value="1">One</option>
                 <option value="2">Two</option>
@@ -32,8 +32,8 @@
         </div>
 
         <div class="col-md-4">
-            <label class='text-center' for="floatingSelectDex">Dexterity</label>
-            <select name="dex" onchange="removeStandardavailible(this)" onfocus="updateStandardList(this)" id='floatingSelectDex' class="form-select" aria-label="Default select example">
+            <label class='text-center' for="standarddex">Dexterity</label>
+            <select name="dex" onchange="removeStandardavailible(this)" onfocus="updateStandardList(this)" id='standarddex' class="form-select" aria-label="Default select example">
                 <option selected></option>
                 <option value="1">One</option>
                 <option value="2">Two</option>
@@ -41,8 +41,8 @@
             </select>
         </div>
         <div class="col-md-4">
-            <label class='text-center' for="floatingSelectCon">Constitution</label>
-            <select name="con" onchange="removeStandardavailible(this)" onfocus="updateStandardList(this)" id='floatingSelectCon' class="form-select" aria-label="Default select example">
+            <label class='text-center' for="standardcon">Constitution</label>
+            <select name="con" onchange="removeStandardavailible(this)" onfocus="updateStandardList(this)" id='standardcon' class="form-select" aria-label="Default select example">
                 <option selected></option>
                 <option value="1">One</option>
                 <option value="2">Two</option>
@@ -50,8 +50,8 @@
             </select>
         </div>
         <div class="col-md-4">
-            <label class='text-center' for="floatingSelectInt">Intelligence</label>
-            <select name="int" onchange="removeStandardavailible(this)" onfocus="updateStandardList(this)" id='floatingSelectInt' class="form-select" aria-label="Default select example">
+            <label class='text-center' for="standardint">Intelligence</label>
+            <select name="int" onchange="removeStandardavailible(this)" onfocus="updateStandardList(this)" id='standardint' class="form-select" aria-label="Default select example">
                 <option selected></option>
                 <option value="1">One</option>
                 <option value="2">Two</option>
@@ -59,8 +59,8 @@
             </select>
         </div>
         <div class="col-md-4">
-            <label class='text-center' for="floatingSelectCha">Charisma</label>
-            <select name="cha" onchange="removeStandardavailible(this)" onfocus="updateStandardList(this)" id='floatingSelectCha' class="form-select" aria-label="Default select example">
+            <label class='text-center' for="standardcha">Charisma</label>
+            <select name="cha" onchange="removeStandardavailible(this)" onfocus="updateStandardList(this)" id='standardcha' class="form-select" aria-label="Default select example">
                 <option selected></option>
                 <option value="1">One</option>
                 <option value="2">Two</option>
@@ -68,8 +68,8 @@
             </select>
         </div>
         <div class="col-md-4">
-            <label class='text-center' for="floatingSelectWis">Wisdom</label>
-            <select name="wis" onchange="removeStandardavailible(this)" onfocus="updateStandardList(this)" id='floatingSelectWis' class="form-select" aria-label="Default select example">
+            <label class='text-center' for="standardwis">Wisdom</label>
+            <select name="wis" onchange="removeStandardavailible(this)" onfocus="updateStandardList(this)" id='standardwis' class="form-select" aria-label="Default select example">
                 <option selected></option>
                 <option value="1">One</option>
                 <option value="2">Two</option>
@@ -88,29 +88,29 @@
         </div>
         <div class="col-md-4">
             <label class='text-center' for="floatingSelectStr">Strength</label>
-            <input onfocus="this.oldValue = this.value;" onchange="updatePoints(this);this.oldValue = this.value;" min=8 max=20 value=8 type="number" id="typeNumber" class="form-control" />
+            <input name="str" onfocus="this.oldValue = this.value;" onchange="updatePoints(this);this.oldValue = this.value;" min=8 max=20 value=8 type="number" id="pointstr" class="form-control" />
         </div>
 
         <div class="col-md-4">
             <label class='text-center' for="floatingSelectDex">Dexterity</label>
-            <input onfocus="this.oldValue = this.value;" onchange="updatePoints(this);this.oldValue = this.value;" min=8 max=20 value=8 type="number" id="typeNumber" class="form-control" />
+            <input name="dex" onfocus="this.oldValue = this.value;" onchange="updatePoints(this);this.oldValue = this.value;" min=8 max=20 value=8 type="number" id="pointdex" class="form-control" />
         </div>
         <div class="col-md-4">
             <label class='text-center' for="floatingSelectCon">Constitution</label>
-            <input onfocus="this.oldValue = this.value;" onchange="updatePoints(this);this.oldValue = this.value;" min=8 max=20 value=8 type="number" id="typeNumber" class="form-control" />
+            <input name="con" onfocus="this.oldValue = this.value;" onchange="updatePoints(this);this.oldValue = this.value;" min=8 max=20 value=8 type="number" id="pointcon" class="form-control" />
         </div>
         <div class="col-md-4">
             <label class='text-center' for="floatingSelectInt">Intelligence</label>
-            <input onfocus="this.oldValue = this.value;" onchange="updatePoints(this);this.oldValue = this.value;" min=8 max=20 value=8 type="number" id="typeNumber" class="form-control" />
+            <input name="int" onfocus="this.oldValue = this.value;" onchange="updatePoints(this);this.oldValue = this.value;" min=8 max=20 value=8 type="number" id="pointint" class="form-control" />
 
         </div>
         <div class="col-md-4">
             <label class='text-center' for="floatingSelectCha">Charisma</label>
-            <input onfocus="this.oldValue = this.value;" onchange="updatePoints(this);this.oldValue = this.value;" min=8 max=20 value=8 type="number" id="typeNumber" class="form-control" />
+            <input name="cha" onfocus="this.oldValue = this.value;" onchange="updatePoints(this);this.oldValue = this.value;" min=8 max=20 value=8 type="number" id="pointcha" class="form-control" />
         </div>
         <div class="col-md-4">
             <label class='text-center' for="floatingSelectWis">Wisdom</label>
-            <input onfocus="this.oldValue = this.value;" onchange="updatePoints(this);this.oldValue = this.value;" min=8 max=20 value=8 type="number" id="typeNumber" class="form-control" />
+            <input name="wis" onfocus="this.oldValue = this.value;" onchange="updatePoints(this);this.oldValue = this.value;" min=8 max=20 value=8 type="number" id="pointwis" class="form-control" />
         </div>
     </div>
 </div>
