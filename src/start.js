@@ -14,8 +14,8 @@ const start = async () => {
     console.log('Flushing Redis');
     await flushAsync();
 
-    //console.log('Prewarm Redis');
-    //await prewarmCashe();
+    console.log('Prewarm Redis');
+    await prewarmCache();
 
     console.log('Setting up Express server');
     const app = await createApp();

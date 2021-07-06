@@ -1,0 +1,116 @@
+<div id="toggleAbilityScoreNumbers" class="btn-group">
+    <input onclick="setAbilityScoreType('standard')" type="radio" class="btn-check" name="standardArray" id="option1"
+        autocomplete="off" checked>
+    <label class="btn btn-secondary" for="option1">Standard Array</label>
+
+
+    <input onclick="setAbilityScoreType('pointBuy')" type="radio" class="btn-check" name="pointBuy" id="option2"
+        autocomplete="off">
+    <label class="btn btn-secondary" for="option2">Point Buy</label>
+
+
+    <input onclick="setAbilityScoreType(none)" type="radio" class="btn-check" name="options" id="option3"
+        autocomplete="off" disabled>
+    <label class="btn btn-secondary" for="option3">Manual</label>
+
+
+    <input onclick="setAbilityScoreType(none)" type="radio" class="btn-check" name="options" id="option4"
+        autocomplete="off" disabled>
+    <label class="btn btn-secondary" for="option4">Custom Array</label>
+</div>
+
+<div id="inputAbilityScoreDisplayStandard" class="container">
+    <div class="row">
+        <div class="col-md-4">
+            <label class='text-center' for="standardstr">Strength</label>
+            <select name="str" onchange="removeStandardavailible(this)" onfocus="updateStandardList(this)" id='standardstr' class="form-select" aria-label="Default select example">
+                <option selected></option>
+                <option value="1">One</option>
+                <option value="2">Two</option>
+                <option value="3">Three</option>
+            </select>
+        </div>
+
+        <div class="col-md-4">
+            <label class='text-center' for="standarddex">Dexterity</label>
+            <select name="dex" onchange="removeStandardavailible(this)" onfocus="updateStandardList(this)" id='standarddex' class="form-select" aria-label="Default select example">
+                <option selected></option>
+                <option value="1">One</option>
+                <option value="2">Two</option>
+                <option value="3">Three</option>
+            </select>
+        </div>
+        <div class="col-md-4">
+            <label class='text-center' for="standardcon">Constitution</label>
+            <select name="con" onchange="removeStandardavailible(this)" onfocus="updateStandardList(this)" id='standardcon' class="form-select" aria-label="Default select example">
+                <option selected></option>
+                <option value="1">One</option>
+                <option value="2">Two</option>
+                <option value="3">Three</option>
+            </select>
+        </div>
+        <div class="col-md-4">
+            <label class='text-center' for="standardint">Intelligence</label>
+            <select name="int" onchange="removeStandardavailible(this)" onfocus="updateStandardList(this)" id='standardint' class="form-select" aria-label="Default select example">
+                <option selected></option>
+                <option value="1">One</option>
+                <option value="2">Two</option>
+                <option value="3">Three</option>
+            </select>
+        </div>
+        <div class="col-md-4">
+            <label class='text-center' for="standardcha">Charisma</label>
+            <select name="cha" onchange="removeStandardavailible(this)" onfocus="updateStandardList(this)" id='standardcha' class="form-select" aria-label="Default select example">
+                <option selected></option>
+                <option value="1">One</option>
+                <option value="2">Two</option>
+                <option value="3">Three</option>
+            </select>
+        </div>
+        <div class="col-md-4">
+            <label class='text-center' for="standardwis">Wisdom</label>
+            <select name="wis" onchange="removeStandardavailible(this)" onfocus="updateStandardList(this)" id='standardwis' class="form-select" aria-label="Default select example">
+                <option selected></option>
+                <option value="1">One</option>
+                <option value="2">Two</option>
+                <option value="3">Three</option>
+            </select>
+        </div>
+    </div>
+</div>
+
+<div id="inputAbilityScoreDisplayPointBuy" class="container">
+    <div class="row">
+        <div class="row">
+            <h1 class="display-5 text-center">Points Remaining</h1>
+            <h1 id="pointBuyScore" class="display-6 text-center">27/27</h1>
+
+        </div>
+        <div class="col-md-4">
+            <label class='text-center' for="floatingSelectStr">Strength</label>
+            <input name="str" onfocus="this.oldValue = this.value;" onchange="updatePoints(this);this.oldValue = this.value;" min=8 max=20 value=8 type="number" id="pointstr" class="form-control" />
+        </div>
+
+        <div class="col-md-4">
+            <label class='text-center' for="floatingSelectDex">Dexterity</label>
+            <input name="dex" onfocus="this.oldValue = this.value;" onchange="updatePoints(this);this.oldValue = this.value;" min=8 max=20 value=8 type="number" id="pointdex" class="form-control" />
+        </div>
+        <div class="col-md-4">
+            <label class='text-center' for="floatingSelectCon">Constitution</label>
+            <input name="con" onfocus="this.oldValue = this.value;" onchange="updatePoints(this);this.oldValue = this.value;" min=8 max=20 value=8 type="number" id="pointcon" class="form-control" />
+        </div>
+        <div class="col-md-4">
+            <label class='text-center' for="floatingSelectInt">Intelligence</label>
+            <input name="int" onfocus="this.oldValue = this.value;" onchange="updatePoints(this);this.oldValue = this.value;" min=8 max=20 value=8 type="number" id="pointint" class="form-control" />
+
+        </div>
+        <div class="col-md-4">
+            <label class='text-center' for="floatingSelectCha">Charisma</label>
+            <input name="cha" onfocus="this.oldValue = this.value;" onchange="updatePoints(this);this.oldValue = this.value;" min=8 max=20 value=8 type="number" id="pointcha" class="form-control" />
+        </div>
+        <div class="col-md-4">
+            <label class='text-center' for="floatingSelectWis">Wisdom</label>
+            <input name="wis" onfocus="this.oldValue = this.value;" onchange="updatePoints(this);this.oldValue = this.value;" min=8 max=20 value=8 type="number" id="pointwis" class="form-control" />
+        </div>
+    </div>
+</div>
