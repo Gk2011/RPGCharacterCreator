@@ -1,9 +1,9 @@
 const mongoose = require('mongoose');
-const Character = require('./models/character');
-const Race = require('./models/race');
+const Character = require('./src/models/character')
+const Race = require('./src/models/race');
 
 // Mongodb connection using mongoose
-mongoose.connect('mongodb://localhost:27017/5e-database', {
+mongoose.connect('mongodb://localhost/5e-database:27017', {
     useNewUrlParser: true,
     useCreateIndex: true,
     useUnifiedTopology: true
@@ -38,10 +38,13 @@ seedRaces = ['Dragonborn', 'Dwarf', 'Elf', 'Gnome',
             'Half-Elf', 'Halfling', 'Half-Orc', 'Human', 'Tiefling'];
 
 const seedDB = async() => {
+    
+    console.log(rpgchar);
     await Character.deleteMany({});
     await Race.deleteMany({});
     for(var i = 0; i < seedCharacters.length; i++){
         const playerChar = new Character({
+            author: '60fcc51a361050002593dd8c',
             name: seedCharacters[i].name,
             class: seedCharacters[i].class,
             race: seedCharacters[i].race,

@@ -6,16 +6,11 @@
 
     <script>
         function myFunction() {
-
-            
-
-
             let userInput = 'dwarf';
-            console.log("made it!")
+            //console.log("made it!")
             var xmlhttp = new XMLHttpRequest();
             xmlhttp.open("GET", '/ajax/', true);
             xmlhttp.setRequestHeader('userInput', userInput)
             xmlhttp.send();
-
         }
     </script>

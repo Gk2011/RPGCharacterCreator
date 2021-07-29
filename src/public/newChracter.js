@@ -4,6 +4,7 @@ function ajaxRequest(requestTag, value) {
         var xmlhttp = new XMLHttpRequest();
         xmlhttp.onreadystatechange = function () {
             if (this.readyState == 4 && this.status == 200) {
+                //console.log(this.responseText);
                 let requestInfo = JSON.parse(this.responseText);
                 if (requestTag == 'race') {
                     formatRace(requestInfo[0]);
@@ -29,22 +30,72 @@ function ajaxRequest(requestTag, value) {
 
 // Format UI information for the user using the current Class selected 
 function formatClass(value) {
-    // set a global variable for currentClassSelected may need to remove later
+    setCardOverview('class');
+    console.log(value);
+
     currentClassSelected = value;
-    //clear overview
-    //console.log(value);
-    document.getElementById('selectedOverview').innerHTML = "";
-    document.getElementById('selectedOverview').append(createElement("H1", getName(value)));
-    document.getElementById('selectedOverview').append(createElement("P", getProficiencies(value)));
+    document.getElementById('currentClassName').innerHTML = getName(value);
+    document.getElementById('hitDie').innerHTML = getHitdie(value);
+    document.getElementById('proficiencies').innerHTML = getProficiencies(value);
+    
+
+ 
 };
 
 // Format UI information for the user using the current Race selected 
 function formatRace(value) {
+    setCardOverview('race');
+    //document.getElementById("classOverview").style.display = "none";
+    //document.getElementById("raceOverview").style.display = "";
+
     // set a global variable for currentRaceSelected may need to remove later
     currentRaceSelected = value;
-    //console.log(value);
-    document.getElementById('selectedOverview').innerHTML = "";
-    document.getElementById('selectedOverview').append(createElement("H1", getName(value)));
+    console.log(value);
+    //document.getElementById('selectedOverview').innerHTML = "";
+    //document.getElementById('selectedOverview').append(createElement("H1", getName(value)));
+    document.getElementById('currentRaceName').innerHTML = currentRaceSelected.name;
+
+    const bonuses = []
+    console.log(currentRaceSelected.ability_bonuses[0].ability_score.name, currentRaceSelected.ability_bonuses[0].bonus);
+
+    const abilityList = document.getElementById('abilityBonus');
+    document.getElementById('abilityBonus').innerHTML = "";
+    for (x in currentRaceSelected.ability_bonuses){
+        //bonuses.push(`${currentRaceSelected.ability_bonuses[x].ability_score.name}: Bonus ${currentRaceSelected.ability_bonuses[x].bonus}`);
+        const bonusName = currentRaceSelected.ability_bonuses[x].ability_score.name;
+        const bonusValue = currentRaceSelected.ability_bonuses[x].bonus;
+
+        const text = new String(`${bonusName}: Bonus: ${bonusValue}`)
+
+        const listItem = document.createElement('li');
+
+        listItem.classList.add("list-group-item");
+
+        const textNode = document.createTextNode(text)
+
+        listItem.appendChild(textNode);
+
+        document.getElementById('abilityBonus').appendChild(listItem);
+        console.log(abilityList);
+        //console.log(entry);
+    }
+
+    //document.getElementById('abilityBonus').innerHTML = bonuses;
+    document.getElementById('speed').innerHTML = currentRaceSelected.speed;
+    document.getElementById('age').innerHTML = currentRaceSelected.age;
+    document.getElementById('language_desc').innerHTML = currentRaceSelected.language_desc;
+    document.getElementById('size').innerHTML = currentRaceSelected.size;
+    const availibleSubraces = [];
+    for(x in currentRaceSelected.subraces){
+        availibleSubraces.push(currentRaceSelected.subraces[x].name)
+    }
+    document.getElementById('subraces').innerHTML = availibleSubraces.join(', ');;
+    const availibleTraits = [];
+    for(x in currentRaceSelected.traits){
+        availibleTraits.push(currentRaceSelected.traits[x].name)
+    }
+    document.getElementById('traits').innerHTML = availibleTraits.join(', ');
+
     //getAbilityBonuses(value);
     updateDisplayRaceMod();
 }
@@ -156,6 +207,7 @@ function updateDisplayRaceMod() {
                 modifyAbilityTable(abilityDomObject.name, "modifier", "-");
                 modifyAbilityTable(abilityDomObject.name, "baseScore", "-");
             }
+        
 
         } catch (error) {
             console.log(error);
@@ -212,6 +264,22 @@ function setAbilityScoreType(value) {
     updateDisplayRaceMod();
     
 };
+
+function setCardOverview(value) {
+    if (value == 'race'){
+        var raceDisplay = document.getElementById("raceOverview");
+        var classDisplay = document.getElementById("classOverview");
+        raceDisplay.style.display = "";
+        classDisplay.style.display = "none";
+    }
+    if (value == 'class'){
+        var raceDisplay = document.getElementById("raceOverview");
+        var classDisplay = document.getElementById("classOverview");
+        raceDisplay.style.display = "none";
+        classDisplay.style.display = "";
+
+    }
+}
 
 // Update points values on change 
 function updatePoints(domAbilityChanged) {
@@ -308,8 +376,11 @@ function sortSelectionBoxArray(array) {
 };
 
 // Set UI Display for standard and pointbuy to none by default, need to add css to remove this code in the future to clean-up
-document.getElementById("inputAbilityScoreDisplayPointBuy").style.display = "none";
-document.getElementById("inputAbilityScoreDisplayStandard").style.display = "none";
+const displayPointBuy = document.getElementById("inputAbilityScoreDisplayPointBuy").style.display = "none";
+const displayStandard = document.getElementById("inputAbilityScoreDisplayStandard").style.display = "";
+
+const raceDisplay = document.getElementById("raceOverview").style.display = "none";
+const classDisplay = document.getElementById("classOverview").style.display = "none";
 
 // global to track points, may add feature to decrease or increase in the future
 let pointsAvailible = 27;

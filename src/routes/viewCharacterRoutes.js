@@ -1,14 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const Character = require('../models/character');
-const AbilityScore = require('../models/ability-scores');
+const viewCharactersController = require('../controllers/viewCharacterController');
+const { isLoggedIn, isAuthor} = require('../middleware');
 
-router.get('/view/:id', async (req, res) => {
-    const { id } = req.params;
-    const character = await Character.findById(id)
-    const abilityScores = await AbilityScore.find({});
-    
-    res.render('characters/view', { character, abilityScores });
-});
+
+router.get('/view/:id', viewCharactersController.get);
+
+
 
 module.exports = router;

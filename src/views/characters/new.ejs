@@ -1,18 +1,18 @@
 <% layout('layouts/boilerplate') %>
 
     <div class="container">
-        <div class="row align-items-center">
-            <div class="col-md-8">
+        <div class="row ">
+            <div class="col-md-7">
                 <form action="/new" method="POST" class="row g-3">
                     <div class="col-md-6">
                         <label for="name" class="form-label">Name</label>
                         <input type="text" class="form-control" name="character[name]" id="name"
-                            placeholder="Character Name">
+                            placeholder="Character Name" required>
                     </div>
                     <div class="col-md-6">
                         <label for="race" class="form-label">Race</label>
                         <select onchange="ajaxRequest('race', this.value)" id='race' class="form-select"
-                            aria-label="Default select example">
+                            aria-label="Default select example" name="character[race]" required>
                             <option selected>Open this select menu</option>
                             <% for( let i=0; i < raceOptions.length; i++ ) { %>
                                 <option value="<%=raceOptions[i].name%>">
@@ -24,7 +24,7 @@
                     <div class="col-md-6">
                         <label for="class" class="form-label">Class</label>
                         <select onchange="ajaxRequest('class', this.value)" id='class' class="form-select"
-                            aria-label="Default select example">
+                            aria-label="Default select example" required>
                             <option selected>Open this select menu</option>
                             <% for( let i=0; i < classOptions.length; i++ ) { %>
                                 <option value="<%= classOptions[i].name %>">
@@ -35,7 +35,7 @@
                     </div>
                     <div class="col-md-6">
                         <label for="level" class="form-label">Level</label>
-                        <select id='class' class="form-select" aria-label="Default select example">
+                        <select id='level' class="form-select" aria-label="Default select example">
                             <option selected>Open this select menu</option>
                             <% for( let i=0; i <=20; i++ ) { %>
                                 <option value="i">
@@ -48,67 +48,129 @@
                     <h2>Ability Calculations</h2>
                     <div id='standardArrayDisplay' class='standardArrayDisplayClass'>
 
-                    <div class="row align-items-center">
-                        <%- include('./partials/inputScoreDisplay') %>
-                    </div>
-                    </div>
-            
-
-
-            <div class="container">
-            <div class="row">
-                <% abilites.forEach(element=> { %>
-                    <div class='col-md-6 mp-0 center'>
-                        <div class="card style=" width: 18rem;">
-                            <div class="card-header">
-                                <%=element.index%> Score
-                            </div>
-
-                            <table id="<%= element.index %>Table" class='table table-borderless'>
-                                <tr id='modifier'>
-                                    <td>Modifier</td>
-                                    <td>-</td>
-                                </tr>
-                                <tr id='baseScore'>
-                                    <td>Base Score</td>
-                                    <td>-</td>
-                                </tr>
-                                <tr id='RacialBonus'>
-                                    <td>Racial Bonus</td>
-                                    <td>-</td>
-                                </tr>
-                                <tr id='abilityImprovementBonus'>
-                                    <td>Ability Improvement</td>
-                                    <td>-</td>
-                                </tr>
-                                <tr id='miscBonus'>
-                                    <td>Misc Bonus</td>
-                                    <td>-</td>
-                                </tr>
-
-                            </table>
+                        <div class="row align-items-center">
+                            <%- include('./partials/inputScoreDisplay') %>
                         </div>
                     </div>
-                    <% });%>
-                </div>
-            </div>
-            <div class="mb-3">
-                <button class="btn btn-success">Add Character</button>
+
+
+
+                    <div class="container">
+                        <div class="row">
+                            <% abilites.forEach(element=> { %>
+                                <div class='col-md-6 mp-0 center'>
+                                    <div class="card style=" width: 18rem;">
+                                        <div class="card-header">
+                                            <%=element.index%> Score
+                                        </div>
+
+                                        <table id="<%= element.index %>Table" class='table table-borderless'>
+                                            <tr id='modifier'>
+                                                <td>Modifier</td>
+                                                <td>-</td>
+                                            </tr>
+                                            <tr id='baseScore'>
+                                                <td>Base Score</td>
+                                                <td>-</td>
+                                            </tr>
+                                            <tr id='RacialBonus'>
+                                                <td>Racial Bonus</td>
+                                                <td>-</td>
+                                            </tr>
+                                            <tr id='abilityImprovementBonus'>
+                                                <td>Ability Improvement</td>
+                                                <td>-</td>
+                                            </tr>
+                                            <tr id='miscBonus'>
+                                                <td>Misc Bonus</td>
+                                                <td>-</td>
+                                            </tr>
+
+                                        </table>
+                                    </div>
+                                </div>
+                                <% });%>
+                        </div>
+                    </div>
+                    <div class="container">
+                        <div class="form-check mb-3">
+                            <input class="form-check-input" type="checkbox" value="" id="share">
+                            <label class="form-check-label" for="flexCheckDefault">
+                                Check to make Public
+                            </label>
+
+
+                        </div>
+                        <div class="mb-3">
+                            <button class="btn btn-success">Add Character</button>
+                        </div>
                 </form>
             </div>
+
         </div>
-            <div class="col">
-                <div class="col-md-4 text-center" id='selectedOverview'>
-                    <h1 id='currentRaceName'>stuff</h1>
-                    <p id='raceAge'>stuff</p>
-                    <p id='launguages'>stuff</p>
-    
+        <div class="col-md-5 align-self-center" id='selectedOverview'>
+            <div class="card" id="raceOverview">
+                <div class="card-header">
+                    Featured
+                    <h4 id="currentRaceName"></h4>
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">Ability Bonus</h5>
+                    <ul class="list-group list-group-flush" id="abilityBonus">
+
+                    </ul>
+                    <h5 class="card-title">Speed</h5>
+                    <p class="card-text" id="speed">With supporting text below as a natural lead-in to additional content.</p>
+
+                    <h5 class="card-title">Age</h5>
+                    <p class="card-text" id="age">With supporting text below as a natural lead-in to additional content.</p>
+
+                    <h5 class="card-title">Language_desc</h5>
+                    <p class="card-text" id="language_desc">With supporting text below as a natural lead-in to additional content.</p>
+
+                    <h5 class="card-title">Size</h5>
+                    <p class="card-text" id="size">With supporting text below as a natural lead-in to additional content.</p>
+
+                    <h5 class="card-title">Subraces</h5>
+                    <p class="card-text" id="subraces">With supporting text below as a natural lead-in to additional content.</p>
+
+                    <h5 class="card-title">Traits</h5>
+                    <p class="card-text" id="traits">With supporting text below as a natural lead-in to additional content.</p>
+                </div>
+            </div>
+            <div class="card" id="classOverview">
+                <div class="card-header">
+                    Featured
+                    <h4 id="currentClassName"></h4>
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">HitDie</h5>
+                    <p class="card-text" id="hitDie">With supporting text below as a natural lead-in to additional content.</p>
+
+                    <h5 class="card-title">proficiencies</h5>
+                    <p class="card-text" id="proficiencies">With supporting text below as a natural lead-in to additional content.</p>
+                    <ul class="list-group list-group-flush" id="proficienciesList">
+                        
+                    </ul>
+
+                    <h5 class="card-title">proficiency_choices</h5>
+                    <p class="card-text" id="proficiency_choices">With supporting text below as a natural lead-in to additional content.</p>
+
+                    <h5 class="card-title">saving_throws</h5>
+                    <p class="card-text" id="saving_throws">With supporting text below as a natural lead-in to additional content.</p>
+
+                    <h5 class="card-title">spellcasting</h5>
+                    <p class="card-text" id="spellcasting">With supporting text below as a natural lead-in to additional content.</p>
+
+                    <h5 class="card-title">subclasses</h5>
+                    <p class="card-text" id="">With supporting text below as a natural lead-in to additional content.</p>
                 </div>
             </div>
         </div>
-
-
     </div>
+
+
+
 
 
 
