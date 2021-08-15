@@ -1,10 +1,12 @@
 const catchAsync = require('../util/catchAsync');
 const User = require('../models/user');
 
+// Render view
 module.exports.registerView = catchAsync(async(req, res) => {
     res.render('users/register');
 });
 
+// Register user, error flash if error
 module.exports.registerUser = catchAsync(async (req, res, next) => {
     try {
         const {email, username, password} = req.body;
@@ -27,10 +29,12 @@ module.exports.registerUser = catchAsync(async (req, res, next) => {
         }
 });
 
+// Render login view
 module.exports.loginView = catchAsync(async (req, res) => {
     res.render('users/login');
 })
 
+// Login user
 module.exports.login = catchAsync(async (req, res) => {
     req.flash('success', 'Welcome back!');
     const redirectUrl = req.session.returnTo || '/index';
@@ -38,6 +42,7 @@ module.exports.login = catchAsync(async (req, res) => {
     res.redirect(redirectUrl);
 })
 
+// logout user
 module.exports.logout = catchAsync(async (req, res) => {
     req.logout();
     req.flash('success', "You have succsefully logged out");

@@ -12,7 +12,7 @@
                     <div class="col-md-6">
                         <label for="race" class="form-label">Race</label>
                         <select onchange="ajaxRequest('race', this.value)" id='race' class="form-select"
-                            aria-label="Default select example" name="character[race]" required>
+                            aria-label="Default select example" name="race" required>
                             <option selected>Open this select menu</option>
                             <% for( let i=0; i < raceOptions.length; i++ ) { %>
                                 <option value="<%=raceOptions[i].name%>">
@@ -24,7 +24,7 @@
                     <div class="col-md-6">
                         <label for="class" class="form-label">Class</label>
                         <select onchange="ajaxRequest('class', this.value)" id='class' class="form-select"
-                            aria-label="Default select example" required>
+                            aria-label="Default select example" name="playerClass" required>
                             <option selected>Open this select menu</option>
                             <% for( let i=0; i < classOptions.length; i++ ) { %>
                                 <option value="<%= classOptions[i].name %>">
@@ -34,11 +34,25 @@
                         </select>
                     </div>
                     <div class="col-md-6">
+                        <label for="background" class="form-label">Background</label>
+                        <select class='form-select' id="background" name="background">
+                            <option selected>Open this select menu</option>
+                            <% for(let i=0; i< backgrounds.length; i++) { %>
+                            <option value="<%= backgrounds[i].name %>">
+                                <%= backgrounds[i].name %>
+                            </option>
+
+                            <% } %>
+
+                        </select>
+
+                    </div>
+                    <div class="col-md-6">
                         <label for="level" class="form-label">Level</label>
-                        <select id='level' class="form-select" aria-label="Default select example">
+                        <select name="level" id='level' class="form-select" aria-label="Default select example">
                             <option selected>Open this select menu</option>
                             <% for( let i=0; i <=20; i++ ) { %>
-                                <option value="i">
+                                <option value=<%= i %>>
                                     <%= i %>
                                 </option>
                                 <% } %>

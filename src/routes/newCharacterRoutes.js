@@ -1,8 +1,6 @@
 const express = require('express');
-
 const newCharacterController = require('../controllers/newCharacterController');
 const { isLoggedIn } = require('../middleware');
-
 const router = express.Router();
 
 router.get('/new/ajax', isLoggedIn, newCharacterController.ajaxRequest);

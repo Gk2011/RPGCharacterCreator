@@ -1,10 +1,11 @@
+console.log('made it to the file?')
+
 // Ajax request function to retreive data from express server for RACE and CLASS
 function ajaxRequest(requestTag, value) {
     if (value != 'Open this select menu') {
         var xmlhttp = new XMLHttpRequest();
         xmlhttp.onreadystatechange = function () {
             if (this.readyState == 4 && this.status == 200) {
-                //console.log(this.responseText);
                 let requestInfo = JSON.parse(this.responseText);
                 if (requestTag == 'race') {
                     formatRace(requestInfo[0]);
@@ -31,8 +32,6 @@ function ajaxRequest(requestTag, value) {
 // Format UI information for the user using the current Class selected 
 function formatClass(value) {
     setCardOverview('class');
-    console.log(value);
-
     currentClassSelected = value;
     document.getElementById('currentClassName').innerHTML = getName(value);
     document.getElementById('hitDie').innerHTML = getHitdie(value);
@@ -50,13 +49,11 @@ function formatRace(value) {
 
     // set a global variable for currentRaceSelected may need to remove later
     currentRaceSelected = value;
-    console.log(value);
     //document.getElementById('selectedOverview').innerHTML = "";
     //document.getElementById('selectedOverview').append(createElement("H1", getName(value)));
     document.getElementById('currentRaceName').innerHTML = currentRaceSelected.name;
 
     const bonuses = []
-    console.log(currentRaceSelected.ability_bonuses[0].ability_score.name, currentRaceSelected.ability_bonuses[0].bonus);
 
     const abilityList = document.getElementById('abilityBonus');
     document.getElementById('abilityBonus').innerHTML = "";
@@ -76,8 +73,6 @@ function formatRace(value) {
         listItem.appendChild(textNode);
 
         document.getElementById('abilityBonus').appendChild(listItem);
-        console.log(abilityList);
-        //console.log(entry);
     }
 
     //document.getElementById('abilityBonus').innerHTML = bonuses;
@@ -101,18 +96,18 @@ function formatRace(value) {
 }
 
 // Getters for getting values of class/race json
-function getName(value) {
-    let name = value.name;
-    return name;
-};
+// function getName(value) {
+//     let name = value.name;
+//     return name;
+// };
 
-function getProficiencies(value) {
-    let y = [];
-    for (var x in value.proficiencies) {
-        y.push(value.proficiencies[x].name);
-    };
-    return y;
-};
+// function getProficiencies(value) {
+//     let y = [];
+//     for (var x in value.proficiencies) {
+//         y.push(value.proficiencies[x].name);
+//     };
+//     return y;
+// };
 
 function getProficienciesChoices(value) {
     let choiceNumber = value.proficiency_choices[0].choose;
@@ -188,17 +183,13 @@ function updateDisplayRaceMod() {
     for (let ability in abiltyScores) {
         let abilityDomObject = null;
         if (document.getElementById("inputAbilityScoreDisplayStandard").style.display == "") {
-            //console.log("display set to standard")
             abilityDomObject = document.getElementById("standard" + abiltyScores[ability]);
         }
         if (document.getElementById("inputAbilityScoreDisplayPointBuy").style.display == "") {
-            //console.log("display set to point")
             abilityDomObject = document.getElementById("point" + abiltyScores[ability]);
         }
         try {
             if (!isNaN(parseInt(abilityDomObject.value)) || (abilityDomObject.value == null)) {
-                //console.log("is number")
-                //console.log(parseInt(abilityDomObject.value));
                 if (currentRaceSelected){
                 modifyAbilityTable(abilityDomObject.name, "modifier", calcAbilityModifier(abilityDomObject));
                 }
@@ -233,14 +224,12 @@ function calcAbilityModifier(abilityDOM) {
     let abilityName = abilityDOM.name;
     let abilityScore = parseInt(abilityDOM.value);
     let raceAbilityBonus = 0;
-    //console.log(abilityDOM.name);
 
     // check if race bonus is applicable for the calculation
     if (abilityDOM.name in raceBonus) {
         raceAbilityBonus = raceBonus[abilityName];
     }
     let modValue = Math.floor(((abilityScore + raceAbilityBonus) - 10) / 2);
-    //console.log(modValue);
     return modValue;
 
     //modifyAbilityTable(abilityName, "modifier", modValue);
@@ -254,11 +243,38 @@ function setAbilityScoreType(value) {
         var y = document.getElementById("inputAbilityScoreDisplayStandard");
         x.style.display = "none";
         y.style.display = "";
+
+        // Being lazy about an issue that needs to be fixed...
+        let pointBuychildNodes = document.getElementById('inputAbilityScoreDisplayPointBuy').getElementsByTagName('*');
+        let standardChildnodes = document.getElementById('inputAbilityScoreDisplayStandard').getElementsByTagName('*');
+
+        for (let node of pointBuychildNodes){
+            node.disabled = true;
+        };
+
+        for (let node of standardChildnodes){
+            node.disabled = false;
+        };
+
+
     } else if (value == 'pointBuy') {
         var x = document.getElementById("inputAbilityScoreDisplayPointBuy");
         var y = document.getElementById("inputAbilityScoreDisplayStandard");
         x.style.display = "";
         y.style.display = "none";
+
+        // Being lazy about an issue that needs to be fixed...
+        let pointBuychildNodes = document.getElementById('inputAbilityScoreDisplayPointBuy').getElementsByTagName('*');
+        let standardChildnodes = document.getElementById('inputAbilityScoreDisplayStandard').getElementsByTagName('*');
+
+        for (let node of pointBuychildNodes){
+            node.disabled = false;
+        };
+
+        for (let node of standardChildnodes){
+            node.disabled = true;
+        };
+
     }
     
     updateDisplayRaceMod();
@@ -277,13 +293,11 @@ function setCardOverview(value) {
         var classDisplay = document.getElementById("classOverview");
         raceDisplay.style.display = "none";
         classDisplay.style.display = "";
-
     }
 }
 
 // Update points values on change 
 function updatePoints(domAbilityChanged) {
-    //console.log("run once")
     // Get old,new,and point change values
     let oldValue = domAbilityChanged.oldValue;
     let newValue = domAbilityChanged.value;
@@ -358,7 +372,6 @@ function removeStandardavailible(domAbilityChanged) {
         standardNotAvailible.push(removeOption);
         domAbilityChanged.blur();
         if (currentRaceSelected) {
-            //console.log(domAbilityChanged.name);
         }
         modifyAbilityTable(domAbilityChanged.name, "baseScore", currentValue);
         if (currentRaceSelected){
@@ -376,8 +389,8 @@ function sortSelectionBoxArray(array) {
 };
 
 // Set UI Display for standard and pointbuy to none by default, need to add css to remove this code in the future to clean-up
-const displayPointBuy = document.getElementById("inputAbilityScoreDisplayPointBuy").style.display = "none";
-const displayStandard = document.getElementById("inputAbilityScoreDisplayStandard").style.display = "";
+//const displayPointBuy = document.getElementById("inputAbilityScoreDisplayPointBuy").style.display = "none";
+//const displayStandard = document.getElementById("inputAbilityScoreDisplayStandard").style.display = "";
 
 const raceDisplay = document.getElementById("raceOverview").style.display = "none";
 const classDisplay = document.getElementById("classOverview").style.display = "none";
@@ -385,9 +398,23 @@ const classDisplay = document.getElementById("classOverview").style.display = "n
 // global to track points, may add feature to decrease or increase in the future
 let pointsAvailible = 27;
 // globals to set availible and not availible values for standard
-let standardAvailible = ["", 8, 10, 12, 13, 14, 15];
-let standardNotAvailible = [];
+
+ if (typeof characterData != "undefined"){
+     console.log('i found a character')
+     var character = JSON.parse(characterData);
+     var standardAvailible = [""];
+     var standardNotAvailible = [];
+     character.abilityScores.forEach(element => {
+         standardNotAvailible.push(element.score);
+     })
+}else{
+    console.log('no character found')
+    var standardAvailible = ["", 8, 10, 12, 13, 14, 15];
+    var standardNotAvailible = [];
+};
 
 
 currentClassSelected = null;
 currentRaceSelected = null;
+
+setAbilityScoreType('standard');

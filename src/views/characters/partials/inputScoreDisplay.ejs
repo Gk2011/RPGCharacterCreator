@@ -19,8 +19,23 @@
     <label class="btn btn-secondary" for="option4">Custom Array</label>
 </div>
 
-<div id="inputAbilityScoreDisplayStandard" class="container">
+<div id="inputAbilityScoreDisplayStandard" class="container" >
     <div class="row">
+        <% if (typeof character != "undefined") { %>
+            <% let abilityStrings = ['Strength', 'Dexterity', 'Constitution', 'Intelligence', 'Charisma', 'Wisdom']; %>
+            <% let iterator = abilityStrings.values() %>  
+            <% character.abilityScores.forEach(element => { %>
+                <div class="col-md-4">
+                    <label class='text-center' for="standard<%=element.ability_score.index%>"><%= iterator.next().value %></label>
+                    <select name="<%=element.ability_score.index%>" onchange="removeStandardavailible(this)" onfocus="updateStandardList(this)" id='standard<%=element.ability_score.index%>' class="form-select" aria-label="Default select example">
+                        <option selected><%= element.score %></option>
+                    </select>
+                </div>
+                
+            <% }) %>
+        <% } else { %> 
+            <% let abilityStrings = ['Strength', 'Dexterity', 'Constitution', 'Intelligence', 'Charisma', 'Wisdom']; %>
+
         <div class="col-md-4">
             <label class='text-center' for="standardstr">Strength</label>
             <select name="str" onchange="removeStandardavailible(this)" onfocus="updateStandardList(this)" id='standardstr' class="form-select" aria-label="Default select example">
@@ -76,6 +91,7 @@
                 <option value="3">Three</option>
             </select>
         </div>
+        <% } %> 
     </div>
 </div>
 

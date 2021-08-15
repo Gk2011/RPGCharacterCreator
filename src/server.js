@@ -2,7 +2,7 @@ if(process.env.NODE_ENV !== "production"){
     require('dotenv').config();
 
 }
-
+//const redis = require('redis')
 const express = require('express');
 const session = require('express-session')
 const flash = require('connect-flash');
@@ -18,12 +18,14 @@ const viewChracterRoutes = require('./routes/viewCharacterRoutes');
 const viewAllCharacterRoutes = require('./routes/viewAllCharacters');
 const userRoutes = require('./routes/users');
 
-
+const { redisClient } = require('./util');
+let RedisStore = require('connect-redis')(session);
 
 // Models
-const Character = require('./models/character');
 const { server_info } = require('./util/RedisClient');
 const ExpressError = require('./util/ExpressError');
+
+
 
 const createApp = async () => {
     const app = express();
@@ -38,21 +40,24 @@ const createApp = async () => {
     app.use(methodOverride('_method'));
 
     // Session Configuration settings
-    const sessionConfig = {
-        secret: 'this shouldbeaENVvariable',
-        resave: false,
-        saveUninitialized: true,
-        cookie: {
-            httpOnly: true,
-            expires: Date.now() +  1000 * 60 * 60 * 24 * 7,
-            maxAge: 1000 * 60 * 60 * 24 * 7
 
-        }
-    }
-    // Add and tell express to use session middleware
-    app.use(session(sessionConfig));
-    // Add flassh to middleware
+    app.use(
+        session({
+          store: new RedisStore({ client: redisClient }),
+          saveUninitialized: false,
+          secret: 'keyboard cat',
+          resave: false,
+          cookie: {
+                    httpOnly: true,
+                    expires: Date.now() +  1000 * 60 * 60 * 24 * 7,
+                    maxAge: 1000 * 60 * 60 * 24 * 7
+                }
+        })
+      )
+
     app.use(flash());
+
+
 
     //Authentication
     const passport = require('passport');
@@ -88,6 +93,11 @@ const createApp = async () => {
 
 
     //Home Route && Error route
+    app.get('/', catchAsync(async (req, res) => {
+        
+        res.render('characters/index');
+        }));
+
     app.get('/index', catchAsync(async (req, res) => {
         
         res.render('characters/index');

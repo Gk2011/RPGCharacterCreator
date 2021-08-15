@@ -3,7 +3,7 @@ const router = express.Router();
 const editCharacterController = require('../controllers/editCharacterController');
 const { isLoggedIn, isAuthor } = require('../middleware');
 
-router.get('/edit/:id', isLoggedIn, isAuthor,editCharacterController.get);
+router.get('/edit/:id', isLoggedIn, isAuthor, editCharacterController.get);
 
 router.delete('/edit/:id', isLoggedIn, isAuthor, editCharacterController.delete);
 

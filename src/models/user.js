@@ -1,8 +1,8 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const passportLocalMongoose = require('passport-local-mongoose');
-const character = require('./character');
 
+// User schema uses passportLocalMongoose, adds on user character data
 const UserSchema = new Schema ({
     email: {
         type: String,

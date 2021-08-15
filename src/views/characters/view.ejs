@@ -1,26 +1,55 @@
-<% layout('layouts/boilerplate') %> 
+<% layout('layouts/boilerplate') %>
 
-<H2>Character View</H2>
 
-<div class="card" style="width: 18rem;" >
-    <div class="card-body">
-        <h5 class="card-title"><%= character.name %> </h5>
-        <h6 class="card-subtitle mb-2 text-muted">Race: <%= character.race %></h6>
-        <h6 class="card-subtitle mb-2 text-muted">Level <%= character.level %> <%= character.class %></h6>
-        <% if (character.subclass != null) { %>
-            <h6 class="card-subtitle mb-2 text-muted">Subclass: <%= character.subclass %></h6>
-         
-        <% } %>
-        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-        <ul class="list-group list-group-flush">
-            <% for( let i = 0; i < abilityScores.length; i++ ) { %>
-                <li class="list-group-item"><%= abilityScores[i].name %>: <%= character.abilityScores[i] %>  </li>
-            <% } %>
-                <li class="list-group-item">Created by: <%= character.author.username %> </li>
-          </ul>
-        <a href="/index" class="card-link">Back</a>
-        <% if(currentUser && character.author.equals(currentUser._id)){ %> 
-        <a href="/edit/<%= character._id %>" class="card-link">Edit</a>
-        <% } %> 
+        <div class="row align-items-center">
+            <div class="col-4 offset-4">
+                <div class="container">
+                <H2 class="text-center">Character View</H2>
+            </div>
+            </div>
+        </div>
+
+
+
+    <div class="row align-items-center">
+        <div class="col-4 offset-4">
+            <div class="container">
+                <div class="card mx-auto" style="width: 18rem;">
+                    <div class="card-body ">
+                        <h5 class="card-title">
+                            <%= character.name %>
+                        </h5>
+                        <h6 class="card-subtitle mb-2 text-muted">Race: <%= character.race.name %>
+                        </h6>
+                        <h6 class="card-subtitle mb-2 text-muted">Class: <%= character.class.name %>
+                        </h6>
+                        <h6 class="card-subtitle mb-2 text-muted">Level: <%= character.level[0].level %>
+                        </h6>
+                        <h6 class="card-subtitle mb-2 text-muted">Background: <%= character.background.name %>
+                        </h6>
+                        <% if (character.subclass !=null) { %>
+                            <h6 class="card-subtitle mb-2 text-muted">Subclass: <%= character.subclass %>
+                            </h6>
+                            <% } %>
+                                <!-- <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p> -->
+                                <ul class="list-group list-group-flush">
+                                    <% for( let i=0; i < abilityScores.length; i++ ) { %>
+                                        <li class="list-group-item">
+                                            <%= abilityScores[i].name %>: <%= character.abilityScores[i].score %>
+                                        </li>
+                                        <% } %>
+                                            <li class="list-group-item">Created by: <%= character.author.username %>
+                                            </li>
+                                </ul>
+                                <a href="/index" class="card-link">Back</a>
+                                <% if(currentUser && character.author.equals(currentUser._id)){ %>
+                                    <a href="/edit/<%= character._id %>" class="card-link">Edit</a>
+                                    <% } %>
+                                        <a href="/PDF/<%= character._id %>" class="card-link">Print</a>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
     </div>
-</div>
