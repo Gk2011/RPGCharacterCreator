@@ -29,6 +29,9 @@ Currently a good amount of work is needed, but I am to a state where I'm willing
   
   ## :mag: Technologies ##
   - [5e-database](http://dnd5eapi.co/)
+  - [expressjs](https://expressjs.com/)
+  - [passportjs](https://www.passportjs.org/)
+  - [<%= EJS %>](https://ejs.co/)
   
   
   
