@@ -27,5 +27,8 @@ Currently a good amount of work is needed, but I am to a state where I'm willing
   docker-compose up --build
   ```
   
+  ## :rocket: Technologies ##
+  - [5e-database](http://dnd5eapi.co/)
+  
   
   
