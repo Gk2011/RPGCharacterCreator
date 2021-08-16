@@ -35,7 +35,4 @@ Currently a good amount of work is needed, but I am to a state where I'm willing
   - [pdf-lib](https://pdf-lib.js.org/)
   - [mongoose](https://mongoosejs.com/docs/4.x/)
   - [redis](https://redis.io/)
-  - 
-  
-  
   
