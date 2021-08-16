@@ -4,7 +4,7 @@ This is a Character creator project that I have been working on while learning N
 (Currently only DnD-5e is availible), and save the character to the user account. The character is viewable only to the author by defualt, and is editable. 
 A PDF can be generated for printing.
 
-Currently a good amount of work is needed, but I am to a state where I'm willing to show it off some.
+Currently a good amount of work is needed, but I am to a state where I'm willing to show it.
 ---
 ### Requirements
 - ### Node installation on Windows
