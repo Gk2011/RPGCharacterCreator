@@ -13,4 +13,6 @@ Currently a good amount of work is needed, but I am to a state where I'm willing
   To run the project directly you will want an installation of Docker which can be found here...
   https://www.docker.com/products/docker-desktop
   
+### Running Project
+  
   
