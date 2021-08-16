@@ -14,6 +14,10 @@ Currently a good amount of work is needed, but I am to a state where I'm willing
   https://www.docker.com/products/docker-desktop
 ---
 ### Running Project
+  Install project dependencies needed
+  ```shell
+  npm ci
+  ```
   Pull the docker images needed from the project directory from a new terminal
   ```shell
   docker-compose pull
