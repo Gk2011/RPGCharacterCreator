@@ -14,7 +14,14 @@ Currently a good amount of work is needed, but I am to a state where I'm willing
   https://www.docker.com/products/docker-desktop
 ---
 ### Running Project
-  From the directory you will want to run...
-  npm ci
+  Pull the docker images needed from the project directory from a new terminal
+  ```shell
+  docker-compose pull
+  ```
+  Run the project using the docker-compose up --build command
+  ```shell
   docker-compose up --build
+  ```
+  
+  
   
