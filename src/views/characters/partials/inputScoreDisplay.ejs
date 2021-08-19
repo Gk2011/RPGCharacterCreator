@@ -1,16 +1,23 @@
 <div id="toggleAbilityScoreNumbers" class="btn-group">
-    <input onclick="setAbilityScoreType('standard')" type="radio" class="btn-check" name="standardArray" id="option1"
-        autocomplete="off" checked>
+    <input onclick="setAbilityScoreType('standard')" type="radio" class="btn-check" name="options" id="option1"
+        autocomplete="off" value="standard" <% if (typeof character != 'undefined') { %>
+             <% if (character.generation == 'standard') { %>
+            checked 
+
+        <% } else { %>
+            checked 
+            <% } }%>
+    >
     <label class="btn btn-secondary" for="option1">Standard Array</label>
 
 
-    <input onclick="setAbilityScoreType('pointBuy')" type="radio" class="btn-check" name="pointBuy" id="option2"
-        autocomplete="off">
+    <input onclick="setAbilityScoreType('pointBuy')" type="radio" class="btn-check" name="options" id="option2"
+        autocomplete="off" value="point-buy" >
     <label class="btn btn-secondary" for="option2">Point Buy</label>
 
 
     <input onclick="setAbilityScoreType(none)" type="radio" class="btn-check" name="options" id="option3"
-        autocomplete="off" disabled>
+        autocomplete="off" value="manual" >
     <label class="btn btn-secondary" for="option3">Manual</label>
 
 
@@ -19,9 +26,9 @@
     <label class="btn btn-secondary" for="option4">Custom Array</label>
 </div>
 
-<div id="inputAbilityScoreDisplayStandard" class="container" >
+<div display="none" id="inputAbilityScoreDisplayStandard" class="container" >
     <div class="row">
-        <% if (typeof character != "undefined") { %>
+        <% if (typeof character != "undefined" && character.generation == 'standard') { %>
             <% let abilityStrings = ['Strength', 'Dexterity', 'Constitution', 'Intelligence', 'Charisma', 'Wisdom']; %>
             <% let iterator = abilityStrings.values() %>  
             <% character.abilityScores.forEach(element => { %>
@@ -95,13 +102,33 @@
     </div>
 </div>
 
-<div id="inputAbilityScoreDisplayPointBuy" class="container">
+<div id="inputAbilityScoreDisplayPointBuy" style="display:none;" class="container">
     <div class="row">
         <div class="row">
             <h1 class="display-5 text-center">Points Remaining</h1>
             <h1 id="pointBuyScore" class="display-6 text-center">27/27</h1>
 
         </div>
+        <% let abilityStrings = ['Str', 'Dex', 'Con', 'Int', 'Cha', 'Wis']; %>
+
+        <% if (typeof character != "undefined" && character.generation == 'point-buy') { %>
+            <% let abilityStrings = ['Strength', 'Dexterity', 'Constitution', 'Intelligence', 'Charisma', 'Wisdom']; %>
+            <% let iterator = abilityStrings.values() %>
+            <% character.abilityScores.forEach(element => { %>
+                
+                <div class="col-md-4">
+                    <label class='text-center' for="floatingSelect"><%= iterator.next().value %></label>
+                    <input name="<%=element.ability_score.index%>" onfocus="this.oldValue = this.value;" onchange="updatePoints(this);this.oldValue = this.value;" min=8 max=20 value=<%= element.score %> type="number" id="point<%=element.ability_score.index%>" class="form-control" />
+                </div>
+
+            <% }) %>
+        </div>
+    </div> 
+            <% } else { %> 
+
+
+
+
         <div class="col-md-4">
             <label class='text-center' for="floatingSelectStr">Strength</label>
             <input name="str" onfocus="this.oldValue = this.value;" onchange="updatePoints(this);this.oldValue = this.value;" min=8 max=20 value=8 type="number" id="pointstr" class="form-control" />
@@ -130,3 +157,4 @@
         </div>
     </div>
 </div>
+<% } %> 

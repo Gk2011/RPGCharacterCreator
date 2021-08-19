@@ -25,6 +25,7 @@ const CharacterSchema = new Schema({
     subclass: APIReference,
     level: [characterLevel],
     abilityScores: [characterAbilityScore],
+    generation: { type: String, enum:['standard', 'point-buy', 'manual'] },
     background: APIReference,
     share: {type: Boolean, default: false},
     author: {

@@ -18,11 +18,13 @@ module.exports.get = catchAsync(async (req, res) => {
     const classOptions = await Class.find({});
     const abilites = await AbilityScore.find({});
     const backgrounds = await Background.find({});
+    const charRace = await Race.findOne({index: character.race.index});
+    console.log(charRace);
     if(!character){
         req.flash('error', 'Character not found!');
         return res.redirect('/index');
     }
-    res.render('characters/edit', { character, raceOptions, classOptions, abilites, backgrounds });
+    res.render('characters/edit', { character, charRace, raceOptions, classOptions, abilites, backgrounds });
 });
 
 // Delete Character
@@ -41,7 +43,7 @@ module.exports.delete = catchAsync(async (req, res) => {
 // Edit/save Character data 
 module.exports.edit =  catchAsync(async (req, res) => {
     const { id } = req.params;
-    const {name, str, int, con, dex, cha, wis, race, playerClass, background, level} = req.body;
+    const {name, str, int, con, dex, cha, wis, race, playerClass, background, level, options} = req.body;
     //const character = await Character.findByIdAndUpdate(id, { ...req.body.character});
     const character = await Character.findById(id);
     if(!character){
@@ -80,6 +82,7 @@ module.exports.edit =  catchAsync(async (req, res) => {
     character.class = classREF;
     character.background = backgroundREF;
     character.level[0] = ({class: levelREF, level: level});
+    character.generation = options;
 
     await character.save();
     req.flash('success', 'Successfully updated Character');

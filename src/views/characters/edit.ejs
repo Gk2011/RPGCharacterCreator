@@ -151,7 +151,7 @@
     </div>
 
     <div class="col-md-5 align-self-center" id='selectedOverview'>
-        <div class="card" id="raceOverview">
+        <div class="card" id="raceOverview" style="display:none;">
             <div class="card-header">
                 Featured
                 <h4 id="currentRaceName"></h4>
@@ -186,7 +186,7 @@
                     content.</p>
             </div>
         </div>
-        <div class="card" id="classOverview">
+        <div class="card" id="classOverview" style="display:none;">
             <div class="card-header">
                 Featured
                 <h4 id="currentClassName"></h4>
@@ -222,6 +222,10 @@
         </div>
     </div>
     </div>
+    <script>
+        const charRaceData = '<%= JSON.stringify(charRace) %>';
+    </script>
+    
     </div>
 
     <script>
@@ -229,11 +233,6 @@
     </script>
 
 
-
-
-
-
-
-
-
     <script src="../newChracter.js"></script>
+
+    <%  %> 

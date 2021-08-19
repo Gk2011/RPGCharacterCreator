@@ -36,29 +36,21 @@ function formatClass(value) {
     document.getElementById('currentClassName').innerHTML = getName(value);
     document.getElementById('hitDie').innerHTML = getHitdie(value);
     document.getElementById('proficiencies').innerHTML = getProficiencies(value);
-    
-
- 
 };
 
 // Format UI information for the user using the current Race selected 
 function formatRace(value) {
     setCardOverview('race');
-    //document.getElementById("classOverview").style.display = "none";
-    //document.getElementById("raceOverview").style.display = "";
 
-    // set a global variable for currentRaceSelected may need to remove later
     currentRaceSelected = value;
-    //document.getElementById('selectedOverview').innerHTML = "";
-    //document.getElementById('selectedOverview').append(createElement("H1", getName(value)));
+
     document.getElementById('currentRaceName').innerHTML = currentRaceSelected.name;
 
     const bonuses = []
 
     const abilityList = document.getElementById('abilityBonus');
     document.getElementById('abilityBonus').innerHTML = "";
-    for (x in currentRaceSelected.ability_bonuses){
-        //bonuses.push(`${currentRaceSelected.ability_bonuses[x].ability_score.name}: Bonus ${currentRaceSelected.ability_bonuses[x].bonus}`);
+    for (x in currentRaceSelected.ability_bonuses) {
         const bonusName = currentRaceSelected.ability_bonuses[x].ability_score.name;
         const bonusValue = currentRaceSelected.ability_bonuses[x].bonus;
 
@@ -81,12 +73,12 @@ function formatRace(value) {
     document.getElementById('language_desc').innerHTML = currentRaceSelected.language_desc;
     document.getElementById('size').innerHTML = currentRaceSelected.size;
     const availibleSubraces = [];
-    for(x in currentRaceSelected.subraces){
+    for (x in currentRaceSelected.subraces) {
         availibleSubraces.push(currentRaceSelected.subraces[x].name)
     }
     document.getElementById('subraces').innerHTML = availibleSubraces.join(', ');;
     const availibleTraits = [];
-    for(x in currentRaceSelected.traits){
+    for (x in currentRaceSelected.traits) {
         availibleTraits.push(currentRaceSelected.traits[x].name)
     }
     document.getElementById('traits').innerHTML = availibleTraits.join(', ');
@@ -95,19 +87,7 @@ function formatRace(value) {
     updateDisplayRaceMod();
 }
 
-// Getters for getting values of class/race json
-// function getName(value) {
-//     let name = value.name;
-//     return name;
-// };
 
-// function getProficiencies(value) {
-//     let y = [];
-//     for (var x in value.proficiencies) {
-//         y.push(value.proficiencies[x].name);
-//     };
-//     return y;
-// };
 
 function getProficienciesChoices(value) {
     let choiceNumber = value.proficiency_choices[0].choose;
@@ -162,10 +142,6 @@ function getAbilityBonuses(value) {
     return abilityScoreBonuses;
 }
 
-function calcClass(value) {
-    return pass
-}
-
 function updateDisplayRaceMod() {
     const abiltyScores = ['str', 'int', 'cha', 'con', 'dex', 'wis'];
     let rowName = "RacialBonus";
@@ -173,12 +149,12 @@ function updateDisplayRaceMod() {
     for (let ability of abiltyScores) {
         clearTableBonus(ability, rowName)
     }
-    if (currentRaceSelected){
-    for (const [key, value] of Object.entries(getAbilityBonuses(currentRaceSelected))) {
-        if (abiltyScores.includes(key)) {
-            modifyAbilityTable(key, rowName, value)
+    if (typeof currentRaceSelected != 'undefined') {
+        for (const [key, value] of Object.entries(getAbilityBonuses(currentRaceSelected))) {
+            if (abiltyScores.includes(key)) {
+                modifyAbilityTable(key, rowName, value)
+            }
         }
-    }
     }
     for (let ability in abiltyScores) {
         let abilityDomObject = null;
@@ -190,15 +166,15 @@ function updateDisplayRaceMod() {
         }
         try {
             if (!isNaN(parseInt(abilityDomObject.value)) || (abilityDomObject.value == null)) {
-                if (currentRaceSelected){
-                modifyAbilityTable(abilityDomObject.name, "modifier", calcAbilityModifier(abilityDomObject));
+                if (typeof currentRaceSelected != "undefined") {
+                    modifyAbilityTable(abilityDomObject.name, "modifier", calcAbilityModifier(abilityDomObject));
                 }
                 modifyAbilityTable(abilityDomObject.name, "baseScore", abilityDomObject.value);
             } else {
                 modifyAbilityTable(abilityDomObject.name, "modifier", "-");
                 modifyAbilityTable(abilityDomObject.name, "baseScore", "-");
             }
-        
+
 
         } catch (error) {
             console.log(error);
@@ -217,6 +193,7 @@ function modifyAbilityTable(abilityTableName, rowName, value) {
 function getAbilityTable(abilityTableName) {
     return document.getElementById(abilityTableName + 'Table');
 };
+
 // calculate ability modifier
 function calcAbilityModifier(abilityDOM) {
     // get the race bonuses
@@ -232,7 +209,6 @@ function calcAbilityModifier(abilityDOM) {
     let modValue = Math.floor(((abilityScore + raceAbilityBonus) - 10) / 2);
     return modValue;
 
-    //modifyAbilityTable(abilityName, "modifier", modValue);
 };
 
 //// Function for updating display score values
@@ -248,11 +224,11 @@ function setAbilityScoreType(value) {
         let pointBuychildNodes = document.getElementById('inputAbilityScoreDisplayPointBuy').getElementsByTagName('*');
         let standardChildnodes = document.getElementById('inputAbilityScoreDisplayStandard').getElementsByTagName('*');
 
-        for (let node of pointBuychildNodes){
+        for (let node of pointBuychildNodes) {
             node.disabled = true;
         };
 
-        for (let node of standardChildnodes){
+        for (let node of standardChildnodes) {
             node.disabled = false;
         };
 
@@ -267,28 +243,28 @@ function setAbilityScoreType(value) {
         let pointBuychildNodes = document.getElementById('inputAbilityScoreDisplayPointBuy').getElementsByTagName('*');
         let standardChildnodes = document.getElementById('inputAbilityScoreDisplayStandard').getElementsByTagName('*');
 
-        for (let node of pointBuychildNodes){
+        for (let node of pointBuychildNodes) {
             node.disabled = false;
         };
 
-        for (let node of standardChildnodes){
+        for (let node of standardChildnodes) {
             node.disabled = true;
         };
 
     }
-    
+
     updateDisplayRaceMod();
-    
+
 };
 
 function setCardOverview(value) {
-    if (value == 'race'){
+    if (value == 'race') {
         var raceDisplay = document.getElementById("raceOverview");
         var classDisplay = document.getElementById("classOverview");
         raceDisplay.style.display = "";
         classDisplay.style.display = "none";
     }
-    if (value == 'class'){
+    if (value == 'class') {
         var raceDisplay = document.getElementById("raceOverview");
         var classDisplay = document.getElementById("classOverview");
         raceDisplay.style.display = "none";
@@ -331,7 +307,7 @@ function updatePoints(domAbilityChanged) {
         // Update UI Score to reflect points used vs overall 27 total
         document.getElementById('pointBuyScore').innerHTML = pointsAvailible.toString() + "/27";
         modifyAbilityTable(domAbilityChanged.name, "baseScore", newValue);
-        if (currentRaceSelected) {
+        if (typeof currentRaceSelected != "undefined") {
             modifyAbilityTable(domAbilityChanged.name, "modifier", calcAbilityModifier(domAbilityChanged));
         }
     }
@@ -374,11 +350,12 @@ function removeStandardavailible(domAbilityChanged) {
         if (currentRaceSelected) {
         }
         modifyAbilityTable(domAbilityChanged.name, "baseScore", currentValue);
-        if (currentRaceSelected){
-        modifyAbilityTable(domAbilityChanged.name, "modifier", calcAbilityModifier(domAbilityChanged));
+        if (currentRaceSelected) {
+            modifyAbilityTable(domAbilityChanged.name, "modifier", calcAbilityModifier(domAbilityChanged));
         }
     }
 }
+
 // Helper sort function to resort standard ability dropdown values
 function sortSelectionBoxArray(array) {
     let firstString = array.shift();
@@ -392,29 +369,49 @@ function sortSelectionBoxArray(array) {
 //const displayPointBuy = document.getElementById("inputAbilityScoreDisplayPointBuy").style.display = "none";
 //const displayStandard = document.getElementById("inputAbilityScoreDisplayStandard").style.display = "";
 
-const raceDisplay = document.getElementById("raceOverview").style.display = "none";
-const classDisplay = document.getElementById("classOverview").style.display = "none";
+//const raceDisplay = document.getElementById("raceOverview").style.display = "none";
+//const classDisplay = document.getElementById("classOverview").style.display = "none";
 
 // global to track points, may add feature to decrease or increase in the future
 let pointsAvailible = 27;
 // globals to set availible and not availible values for standard
 
- if (typeof characterData != "undefined"){
-     console.log('i found a character')
-     var character = JSON.parse(characterData);
-     var standardAvailible = [""];
-     var standardNotAvailible = [];
-     character.abilityScores.forEach(element => {
-         standardNotAvailible.push(element.score);
-     })
+var standardAvailible = ["", 8, 10, 12, 13, 14, 15];
+var standardNotAvailible = [];
+
+if (typeof characterData != "undefined") {
+    console.log('i found a character')
+    var character = JSON.parse(characterData);
+    var currentRaceSelected = (charRaceData);
+    
+    
+    if (character.generation == 'standard') {
+        character.abilityScores.forEach(element => {
+            console.log(element.score)
+            if (standardAvailible.includes(element.score)){
+                standardNotAvailible.push(element.score);
+
+                standardAvailible.splice(standardAvailible.indexOf(element.score), 1);
+                console.log(element.score)
+            }
+        })
+        setAbilityScoreType('standard');
+
+
+
+    };
+    if (character.generation == 'point-buy'){
+        character.abilityScores.forEach(element => {
+            pointsAvailible += 8 - element.score ;
+        })
+        document.getElementById('pointBuyScore').innerHTML = pointsAvailible.toString() + "/27";
+        setAbilityScoreType('pointBuy');
+    }
 }else{
+    let currentClassSelected = 'undefined';
+    let currentRaceSelected = null;
     console.log('no character found')
-    var standardAvailible = ["", 8, 10, 12, 13, 14, 15];
-    var standardNotAvailible = [];
 };
 
 
-currentClassSelected = null;
-currentRaceSelected = null;
-
-setAbilityScoreType('standard');
+//setAbilityScoreType('standard');

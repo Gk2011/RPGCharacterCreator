@@ -33,9 +33,12 @@ module.exports.view = catchAsync(async (req, res) => {
 // Create character and save to database, associate character with user model 
 module.exports.addCharacter = catchAsync(async (req, res) => {
     // View data
-    const {str, int, con, dex, cha, wis, race, playerClass, background, level} = req.body;
-
+    const {str, int, con, dex, cha, wis, race, playerClass, background, level, options} = req.body;
+    //console.log(standardArray, pointBuy)
     // Get database info from variables
+
+
+
     const charClass = await Class.findOne({name: playerClass});
     const charRace = await Race.findOne({name: race});
     const charBackground = await Background.findOne({name: background});
@@ -60,6 +63,10 @@ module.exports.addCharacter = catchAsync(async (req, res) => {
     const conREF = {index:'con', name:'CON',url:'/api/ability-scores/con'}
     const chaREF = {index:'cha', name:'CHA',url:'/api/ability-scores/cha'}
     const wisREF = {index:'wis', name:'WIS',url:'/api/ability-scores/wis'}
+
+    if (options){
+        character.generation = options;
+    };
     
     // Set character data to refrence data
     character.race = raceREF;
