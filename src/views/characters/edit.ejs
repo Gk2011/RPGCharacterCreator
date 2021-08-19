@@ -63,7 +63,7 @@
                         <label for="level" class="form-label">Level</label>
                         <select name="level" id='level' class="form-select" aria-label="Default select example">
                             <option selected>Open this select menu</option>
-                            <% for( let i=0; i <=20; i++ ) { %>
+                            <% for( let i=1; i <=20; i++ ) { %>
                                 <option <% if (i==character.level[0].level) { %>
                                     selected
                                     <% } %> value=<%= i %>>
