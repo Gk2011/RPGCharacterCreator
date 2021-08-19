@@ -39,6 +39,14 @@
                                         </li>
                                         <% } %>
                                             <li class="list-group-item">Created by: <%= character.author.username %>
+                                            <li class="list-group-item">
+                                                <% if (character.share == true) { %>
+                                                 Character is public
+                                                <% } else { %>
+                                                    Character is private
+                                                <% } %> 
+                                                 
+                                            </li>
                                             </li>
                                 </ul>
                                 <a href="/index" class="card-link">Back</a>

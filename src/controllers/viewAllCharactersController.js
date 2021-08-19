@@ -15,10 +15,17 @@ module.exports.get = catchAsync(async (req, res) => {
     const user = await User.findById(req.user._id);
     const userCharacters = user.characters.toObject();
     const characters = [];
-    
-    for(x in userCharacters){
+
+    for (x in userCharacters) {
         const findChar = await Character.findById(userCharacters[x]);
-        characters.push(findChar);
+        if (!findChar) {
+            await user.characters.pull(userCharacters[x]);
+        };
+        
+        if (findChar) {
+            characters.push(findChar);
+        }
     }
+    user.save();
     res.render('characters/playerCharacters', { characters });
 });
