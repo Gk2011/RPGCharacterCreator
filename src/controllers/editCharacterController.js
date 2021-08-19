@@ -19,7 +19,6 @@ module.exports.get = catchAsync(async (req, res) => {
     const abilites = await AbilityScore.find({});
     const backgrounds = await Background.find({});
     const charRace = await Race.findOne({index: character.race.index});
-    console.log(charRace);
     if(!character){
         req.flash('error', 'Character not found!');
         return res.redirect('/index');
@@ -43,7 +42,7 @@ module.exports.delete = catchAsync(async (req, res) => {
 // Edit/save Character data 
 module.exports.edit =  catchAsync(async (req, res) => {
     const { id } = req.params;
-    const {name, str, int, con, dex, cha, wis, race, playerClass, background, level, options} = req.body;
+    const {name, str, int, con, dex, cha, wis, race, playerClass, background, level, options, share} = req.body;
     //const character = await Character.findByIdAndUpdate(id, { ...req.body.character});
     const character = await Character.findById(id);
     if(!character){
@@ -77,6 +76,14 @@ module.exports.edit =  catchAsync(async (req, res) => {
     character.abilityScores[3].score = con;
     character.abilityScores[4].score = cha;
     character.abilityScores[5].score = wis;
+
+
+    if (share == 'on' ){
+        character.share = true;
+    }else{
+        character.share = false;
+    }
+    
 
     character.race = raceREF;
     character.class = classREF;

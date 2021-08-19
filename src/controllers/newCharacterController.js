@@ -33,7 +33,7 @@ module.exports.view = catchAsync(async (req, res) => {
 // Create character and save to database, associate character with user model 
 module.exports.addCharacter = catchAsync(async (req, res) => {
     // View data
-    const {str, int, con, dex, cha, wis, race, playerClass, background, level, options} = req.body;
+    const {str, int, con, dex, cha, wis, race, playerClass, background, level, options, share} = req.body;
     //console.log(standardArray, pointBuy)
     // Get database info from variables
 
@@ -66,6 +66,10 @@ module.exports.addCharacter = catchAsync(async (req, res) => {
 
     if (options){
         character.generation = options;
+    };
+
+    if (share == 'on' ){
+        character.share = true;
     };
     
     // Set character data to refrence data
