@@ -13,7 +13,8 @@ const Level = require('../models/level');
 // Get Character and render View
 module.exports.get = catchAsync(async (req, res) => {
     const { id } = req.params;
-    const character = await Character.findById(id);
+    console.log(id);
+    const character = await Character.findById(id.trim());
     const raceOptions = await Race.find({});
     const classOptions = await Class.find({});
     const abilites = await AbilityScore.find({});
