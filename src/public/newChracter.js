@@ -33,9 +33,17 @@ function ajaxRequest(requestTag, value) {
 function formatClass(value) {
     setCardOverview('class');
     currentClassSelected = value;
-    document.getElementById('currentClassName').innerHTML = getName(value);
-    document.getElementById('hitDie').innerHTML = getHitdie(value);
-    document.getElementById('proficiencies').innerHTML = getProficiencies(value);
+    console.log(value);
+    document.getElementById('currentClassName').innerHTML = currentClassSelected.name;
+    document.getElementById('hitDie').innerHTML = currentClassSelected.hit_die;
+    document.getElementById('proficiencies').innerHTML = currentClassSelected.proficiencies;
+    proficiencies
+    document.getElementById('proficiency_choices').innerHTML = currentClassSelected.proficiency_choices;
+    document.getElementById('saving_throws').innerHTML = currentClassSelected.saving_throws;
+
+    //document.getElementById('currentClassName').innerHTML = getName(value);
+    //document.getElementById('hitDie').innerHTML = getHitdie(value);
+    //document.getElementById('proficiencies').innerHTML = getProficiencies(value);
 };
 
 // Format UI information for the user using the current Race selected 
